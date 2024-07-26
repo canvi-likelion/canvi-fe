@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CANVI",
-    "slug": "CANVI",
+    "slug": "canvi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,16 +12,24 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sansan20535.canvi"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sansan20535.canvi"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "24e084fb-1418-4564-828d-91e63615ddb4"
+      }
+    },
+    "owner": "sansan20535"
   }
 }
