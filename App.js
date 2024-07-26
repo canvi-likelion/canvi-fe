@@ -12,13 +12,29 @@ import AIWriteDiary from "./AIWriteDiary";
 import AICompleteDiary from "./AICompleteDiary";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import StartScreen from './screens/startscreen';
+import LoginScreen from './screens/LoginScreen';
+import SignUpScreen from './screens/SignupScreen';
+import SignupScreenEmail from './screens/SignupScreenEmail';
+import SignupScreenPW from './screens/SignupScreenPW';
+import SignupScreenPWCheck from './screens/SignupScreenPWCheck';
+import SignupOK from './screens/SignupOK';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainPage">
+      <Stack.Navigator initialRouteName="Start">
+
+        <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{  headerShown: false }} />
+        <Stack.Screen name="SignupScreenEmail" component={SignupScreenEmail} options={{ headerShown: false }} />
+        <Stack.Screen name="SignupScreenPW" component={SignupScreenPW} options={{ headerShown: false }} />
+        <Stack.Screen name="SignupScreenPWCheck" component={SignupScreenPWCheck} options={{ headerShown: false }} />
+        <Stack.Screen name="SignupOK" component={SignupOK} options={{ headerShown: false }} />
+        
         <Stack.Screen
           name="MainPage"
           component={MainPage}
