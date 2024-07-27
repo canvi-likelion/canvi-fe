@@ -21,7 +21,7 @@ const MainPage = ({navigation}) => {
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>{reduxUserInfo.userName} 님,</Text>
+                    <Text style={styles.headerText}>{reduxUserInfo.userName}님,</Text>
                     <Text style={styles.subHeaderText}>오늘의 하루도 기록해볼까요?</Text>
                 </View>
                 <View style={styles.profileCard}>
@@ -39,7 +39,7 @@ const MainPage = ({navigation}) => {
                         source={require("./assets/img/mainPageCard.png")}
                         style={styles.blogImage}
                     />
-                    <Text style={styles.blogTitle}>어제의 홍길동님은?</Text>
+                    <Text style={styles.blogTitle}>어제의 {reduxUserInfo.userName}님은?</Text>
                     <Text style={styles.blogDate}>Monday Jan 20, 2020</Text>
                     <Text style={styles.blogContent}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare
