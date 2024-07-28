@@ -24,7 +24,7 @@ const LoginScreen = ({navigation}) => {
             dispatch(setUserName(res.data.result.username));
             dispatch(setAccessToken(res.data.result.accessToken));
             navigation.navigate('MainPage');
-            console.log(res)
+            console.log(res.data)
         }).catch(err => {
             console.log(err)
         })

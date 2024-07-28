@@ -1,9 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native';
+import {setEmail, setPassword} from "../store/reducers/register-slice";
+import {useDispatch, useSelector} from "react-redux";
 
 const backIcon = require('../assets/back.png');
 
 const SignupScreenEmail = ({ navigation }) => {
+
+  const dispatch = useDispatch()
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -23,6 +28,9 @@ const SignupScreenEmail = ({ navigation }) => {
         <Text style={styles.stepText}>3. 사용하실 비밀번호를 입력해 주세요.</Text>
         <TextInput
           style={styles.input}
+          onChangeText={(text) => {
+            dispatch(setPassword(text));
+          }}
           placeholder="비밀번호를 입력해주세요."
           placeholderTextColor="#787878"
         />

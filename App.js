@@ -22,6 +22,7 @@ import ChooseDetails from './ChooseDetails';
 import AIHelpDiary from './AIHelpDiary';
 import AIWriteDiary from './AIWriteDiary';
 import AICompleteDiary from './AICompleteDiary';
+import MyPage from "./screens/mypage/MyPage";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ export default function App() {
                         <Stack.Screen name="SignupOK" component={SignupOK} options={{ headerShown: false }} />
                         <Stack.Screen name="MainPage" component={MainPage} options={{ title: "Main Page" }} />
                         <Stack.Screen name="MakeDiary" component={MakeDiary} options={{ title: "Make Diary" }} />
+                        <Stack.Screen name="MyPage" component={MyPage} options={{ title: "MyPage" }} />
                         <Stack.Screen name="ChooseDrawStyle" component={ChooseDrawStyle} options={{ title: "Choose Draw Style" }} />
                         <Stack.Screen name="ChooseDate" component={ChooseDate} options={{ title: "Choose Date" }} />
                         <Stack.Screen name="WriteDiary" component={WriteDiary} options={{ title: "Write Diary" }} />
