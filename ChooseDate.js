@@ -26,7 +26,10 @@ const ChooseDate = ({ navigation, route }) => {
           monthFormat={"MMMM yyyy"}
           onDayPress={(day) => {
             console.log("selected day", day);
-            navigation.navigate("WriteDiary");
+            navigation.navigate("WriteDiary", {
+              selectedDay: day.day,
+              selectedMonth: day.month,
+            });
           }}
           theme={{
             arrowColor: "#4A90E2",
