@@ -3,9 +3,9 @@ import {View, Text, StyleSheet, TextInput, Image, TouchableOpacity} from 'react-
 import ModalDropdown from 'react-native-modal-dropdown';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
-import {setEmail} from "../store/reducers/register-slice";
+import {setEmail} from "../../store/reducers/register-slice";
 
-const backIcon = require('../assets/back.png');
+const backIcon = require('../../assets/back.png');
 
 const SignupScreenEmail = ({navigation}) => {
     const [inputEmail, setInputEmail] = useState('');

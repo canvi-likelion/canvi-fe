@@ -43,7 +43,7 @@ function MyPage({navigation}) {
             <TouchableOpacity onPress={handleLogout}>
                 <Text>로그아웃</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleLogout}>
+            <TouchableOpacity onPress={handleWithdrawal}>
                 <Text>회원 탈퇴</Text>
             </TouchableOpacity>
         </SafeAreaView>
