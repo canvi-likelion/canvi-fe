@@ -5,7 +5,7 @@ import {
     StyleSheet,
     Image,
     Button,
-    ScrollView,
+    ScrollView, Touchable, TouchableOpacity,
 } from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -59,10 +59,10 @@ const MainPage = ({navigation}) => {
                     <Icon name="calendar-outline" size={30} color="#A8A8A8"/>
                     <Text style={styles.footerText}>캘린더</Text>
                 </View>
-                <View style={styles.iconContainer}>
+                <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('MyPage')}>
                     <Icon name="person-outline" size={30} color="#A8A8A8"/>
                     <Text style={styles.footerText}>마이페이지</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );

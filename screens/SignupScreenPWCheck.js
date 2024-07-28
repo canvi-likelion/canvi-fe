@@ -14,9 +14,7 @@ const SignupScreenEmail = ({navigation}) => {
     const validationPassword = () => {
         const password = reduxRegisterInfo.password;
         if (password === inputPassword) {
-            console.log(reduxRegisterInfo.userName);
-            console.log(reduxRegisterInfo.email);
-            console.log(reduxRegisterInfo.password);
+
             requestApi.post("/api/auth/signup", {
                 username: reduxRegisterInfo.userName,
                 email: reduxRegisterInfo.email,
@@ -31,7 +29,6 @@ const SignupScreenEmail = ({navigation}) => {
             })
         }
     }
-    console.log();
 
     return (
         <View style={styles.container}>
