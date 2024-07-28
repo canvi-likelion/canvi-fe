@@ -23,7 +23,7 @@ function MyPage({navigation}) {
     }
 
     const handleWithdrawal = () => {
-        requestApi.delete("/api/auth/user", {},
+        requestApi.delete("/api/auth/user",
             {
                 headers: {
                     Authorization: `Bearer ${reduxUserInfo.accessToken}`

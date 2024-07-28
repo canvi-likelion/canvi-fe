@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {requestApi} from "../../utils/apiSetting";
 import {useDispatch} from "react-redux";
 import {setAccessToken, setUserName} from "../../store/reducers/user-slice";
@@ -8,38 +8,40 @@ const logoImage = require('../../assets/icon.png');
 const emailIcon = require('../../assets/email.png');
 const passwordIcon = require('../../assets/password.png');
 
-const LoginScreen = ({navigation}) => {
-    const [loginForm, setLoginForm] = useState({
+const ResetPassword = ({navigation}) => {
+    const [resetPasswordForm, setResetPasswordForm] = useState({
         "username": "",
-        "password": ""
-    })
+        "email": ""
+    });
+    const [isLoading, setIsLoading] = useState(false);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const handleLogin = () => {
-        requestApi.post("/api/auth/login", {
-            username: loginForm.username,
-            password: loginForm.password
+        setIsLoading(true);
+        requestApi.post("/api/auth/reset-password", {
+            username: resetPasswordForm.username,
+            email: resetPasswordForm.email
         }).then(res => {
-            dispatch(setUserName(res.data.result.username));
-            dispatch(setAccessToken(res.data.result.accessToken));
-            navigation.navigate('MainPage');
-            console.log(res.data)
+            navigation.navigate('Login');
+            console.log(res.data);
         }).catch(err => {
-            console.log(err)
-        })
-    }
+            console.log(err);
+        }).finally(() => {
+            setIsLoading(false);
+        });
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentContainer}>
                 <Image source={logoImage} style={styles.logo}/>
-                <Text style={styles.title}>로그인</Text>
+                <Text style={styles.title}>비밀번호 초기화</Text>
 
                 <View style={styles.inputContainer}>
                     <TextInput
-                        value={loginForm.username}
-                        onChangeText={(text) => setLoginForm((prev) => ({
+                        value={resetPasswordForm.username}
+                        onChangeText={(text) => setResetPasswordForm((prev) => ({
                             ...prev,
                             username: text
                         }))}
@@ -52,32 +54,30 @@ const LoginScreen = ({navigation}) => {
 
                 <View style={styles.inputContainer}>
                     <TextInput
-                        value={loginForm.password}
-                        onChangeText={(text) => setLoginForm((prev) => ({
+                        value={resetPasswordForm.email}
+                        onChangeText={(text) => setResetPasswordForm((prev) => ({
                             ...prev,
-                            password: text
+                            email: text
                         }))}
                         style={styles.input}
-                        placeholder="Password"
+                        placeholder="Email"
                         placeholderTextColor="#787878"
-                        secureTextEntry
                     />
                     <Image source={passwordIcon} style={styles.iconp}/>
                 </View>
 
-                {/*<TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MainPage')}>*/}
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.buttonText}>로그인</Text>
+                <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
+                    {isLoading ? (
+                        <ActivityIndicator size="small" color="#FFFFFF"/>
+                    ) : (
+                        <Text style={styles.buttonText}>초기화</Text>
+                    )}
                 </TouchableOpacity>
 
                 <View style={styles.linksContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
-                        <Text style={styles.link}>비밀번호 초기화</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <Text style={styles.link}>로그인 페이지로</Text>
                     </TouchableOpacity>
-                    {/*<Text style={styles.linkDivider}> | </Text>*/}
-                    {/*<TouchableOpacity>*/}
-                    {/*    <Text style={styles.link}>비밀번호 찾기</Text>*/}
-                    {/*</TouchableOpacity>*/}
                 </View>
             </View>
 
@@ -195,4 +195,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
+export default ResetPassword;
