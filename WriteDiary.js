@@ -8,20 +8,32 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const WriteDiary = ({ navigation }) => {
+const WriteDiary = ({ navigation, route }) => {
+  const { selectedDay, selectedMonth } = route.params; // Access the passed date parameter
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.navigation}>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            console.log(selectedDay);
+            navigation.goBack();
+          }}
         >
           <Text style={styles.navButtonText}>취소</Text>
         </TouchableOpacity>
-        <Text style={styles.navTitle}>8/6일의 일기</Text>
+        <Text style={styles.navTitle}>
+          {selectedMonth}월 {selectedDay}일의 일기
+        </Text>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate("ChooseWeather")}
+          onPress={() =>
+            navigation.navigate("ChooseWeather", {
+              selectedDay: selectedDay,
+              selectedMonth: selectedMonth,
+            })
+          }
         >
           <Text style={styles.navButtonText}>다음</Text>
         </TouchableOpacity>
