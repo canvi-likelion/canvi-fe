@@ -1,23 +1,31 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Image, TouchableOpacity} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
+import {setEmail} from "../store/reducers/register-slice";
 
 const backIcon = require('../assets/back.png');
 
 const SignupScreenEmail = ({navigation}) => {
-    const [email, setEmail] = useState('');
+    const [inputEmail, setInputEmail] = useState('');
     const [domain, setDomain] = useState('gmail.com');
     const domains = ['gmail.com', 'naver.com', 'kakao.com', 'daum.com'];
     const [isFocused, setIsFocused] = useState(false);
+
+    const dispatch = useDispatch()
 
     const handleSelect = (index, value) => {
         setDomain(value);
         setIsFocused(true);
     };
 
-    const reduxRegisterInfo = useSelector((state) => state.registerInfo)
-    console.log(reduxRegisterInfo.userName);
+    const handleNext = () => {
+        dispatch(setEmail(`${inputEmail}@${domain}`));
+
+        navigation.navigate('SignupScreenPW');
+    }
+
 
     return (
         <View style={styles.container}>
@@ -42,8 +50,8 @@ const SignupScreenEmail = ({navigation}) => {
                             style={styles.inputLeft}
                             placeholder="예) ABCD1234"
                             placeholderTextColor="#787878"
-                            value={email}
-                            onChangeText={setEmail}
+                            value={inputEmail}
+                            onChangeText={setInputEmail}
                         />
 
                     </View>
@@ -72,7 +80,8 @@ const SignupScreenEmail = ({navigation}) => {
             </View>
 
             <View style={styles.nextbutton}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignupScreenPW')}>
+                {/*<TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignupScreenPW')}>*/}
+                <TouchableOpacity style={styles.button} onPress={handleNext}>
                     <Text style={styles.buttonText}>다음</Text>
                 </TouchableOpacity>
             </View>
