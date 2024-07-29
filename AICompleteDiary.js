@@ -14,7 +14,7 @@ const AICompleteDiary = ({ navigation }) => {
       <View style={styles.content}>
         <Text style={styles.dateText}>2024년 08월 06일</Text>
         <Image
-          source={{ uri: "https://via.placeholder.com/150" }}
+          source={require("./assets/img/completeMakeAiDiary.png")}
           style={styles.image}
         />
         <Text style={styles.title}>
