@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Image, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
-import {setPassword} from "../store/reducers/register-slice";
-import {requestApi} from "../utils/apiSetting";
+import {setPassword} from "../../store/reducers/register-slice";
+import {requestApi} from "../../utils/apiSetting";
 
-const backIcon = require('../assets/back.png');
+const backIcon = require('../../assets/back.png');
 
 const SignupScreenEmail = ({navigation}) => {
     const [inputPassword, setInputPassword] = useState('');

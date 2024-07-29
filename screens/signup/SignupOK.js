@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native';
 
-const checkIcon = require('../assets/check.png');
+const checkIcon = require('../../assets/check.png');
 
 const SignupScreenEmail = ({ navigation }) => {
   return (

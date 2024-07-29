@@ -2,10 +2,10 @@ import React from 'react';
 import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from "react-redux";
-import {requestApi} from "../utils/apiSetting";
-import {setUserName} from "../store/reducers/register-slice";
+import {requestApi} from "../../utils/apiSetting";
+import {setUserName} from "../../store/reducers/register-slice";
 
-const backIcon = require('../assets/back.png');
+const backIcon = require('../../assets/back.png');
 
 const SignUpScreen = () => {
     const navigation = useNavigation();

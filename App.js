@@ -6,12 +6,12 @@ import { store, persistor } from './store/store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import StartScreen from './screens/startscreen';
-import LoginScreen from './screens/LoginScreen';
-import SignUpScreen from './screens/SignupScreen';
-import SignupScreenEmail from './screens/SignupScreenEmail';
-import SignupScreenPW from './screens/SignupScreenPW';
-import SignupScreenPWCheck from './screens/SignupScreenPWCheck';
-import SignupOK from './screens/SignupOK';
+import LoginScreen from './screens/login/LoginScreen';
+import SignUpScreen from './screens/signup/SignupScreen';
+import SignupScreenEmail from './screens/signup/SignupScreenEmail';
+import SignupScreenPW from './screens/signup/SignupScreenPW';
+import SignupScreenPWCheck from './screens/signup/SignupScreenPWCheck';
+import SignupOK from './screens/signup/SignupOK';
 import MainPage from './MainPage';
 import MakeDiary from './MakeDiary';
 import ChooseDrawStyle from './ChooseDrawStyle';
@@ -23,6 +23,8 @@ import AIHelpDiary from './AIHelpDiary';
 import AIWriteDiary from './AIWriteDiary';
 import AICompleteDiary from './AICompleteDiary';
 import MyPage from "./screens/mypage/MyPage";
+import SignupScreenValidationEmail from "./screens/signup/SignupScreenValidationEmail";
+import ResetPassword from "./screens/find/ResetPassword";
 
 const Stack = createStackNavigator();
 
@@ -36,12 +38,14 @@ export default function App() {
                         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="SignupScreenEmail" component={SignupScreenEmail} options={{ headerShown: false }} />
+                        <Stack.Screen name="SignupScreenValidationEmail" component={SignupScreenValidationEmail} options={{ headerShown: false }} />
                         <Stack.Screen name="SignupScreenPW" component={SignupScreenPW} options={{ headerShown: false }} />
                         <Stack.Screen name="SignupScreenPWCheck" component={SignupScreenPWCheck} options={{ headerShown: false }} />
                         <Stack.Screen name="SignupOK" component={SignupOK} options={{ headerShown: false }} />
                         <Stack.Screen name="MainPage" component={MainPage} options={{ title: "Main Page" }} />
                         <Stack.Screen name="MakeDiary" component={MakeDiary} options={{ title: "Make Diary" }} />
                         <Stack.Screen name="MyPage" component={MyPage} options={{ title: "MyPage" }} />
+                        <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ title: "ResetPassword" }} />
                         <Stack.Screen name="ChooseDrawStyle" component={ChooseDrawStyle} options={{ title: "Choose Draw Style" }} />
                         <Stack.Screen name="ChooseDate" component={ChooseDate} options={{ title: "Choose Date" }} />
                         <Stack.Screen name="WriteDiary" component={WriteDiary} options={{ title: "Write Diary" }} />

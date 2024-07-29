@@ -21,10 +21,30 @@ function MyPage({navigation}) {
             console.log(err)
         })
     }
+
+    const handleWithdrawal = () => {
+        requestApi.delete("/api/auth/user",
+            {
+                headers: {
+                    Authorization: `Bearer ${reduxUserInfo.accessToken}`
+                }
+            }).then(res => {
+            navigation.navigate('Start');
+
+            console.log(res.data)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+
     return (
         <SafeAreaView>
             <TouchableOpacity onPress={handleLogout}>
                 <Text>로그아웃</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleWithdrawal}>
+                <Text>회원 탈퇴</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

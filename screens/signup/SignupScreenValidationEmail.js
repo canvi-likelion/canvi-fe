@@ -1,88 +1,77 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TextInput, Image, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigation} from "@react-navigation/native";
-import {setEmail} from "../store/reducers/register-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { setEmail } from "../../store/reducers/register-slice";
+import { requestApi } from "../../utils/apiSetting";
+import { setAccessToken, setUserName } from "../../store/reducers/user-slice";
 
-const backIcon = require('../assets/back.png');
+const backIcon = require('../../assets/back.png');
 
-const SignupScreenEmail = ({navigation}) => {
-    const [inputEmail, setInputEmail] = useState('');
-    const [domain, setDomain] = useState('gmail.com');
-    const domains = ['gmail.com', 'naver.com', 'kakao.com', 'daum.com'];
-    const [isFocused, setIsFocused] = useState(false);
+const SignupScreenValidationEmail = ({ navigation }) => {
+    const [inputEmailCode, setInputEmailCode] = useState('');
+    const [handleNextButton, setHandleNextButton] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const reduxRegisterInfo = useSelector(state => state.registerInfo);
 
-    const handleSelect = (index, value) => {
-        setDomain(value);
-        setIsFocused(true);
+    const verifyCode = () => {
+        setIsLoading(true);
+        requestApi.post("/api/email-auth/verify-code", {
+            email: reduxRegisterInfo.email,
+            code: inputEmailCode
+        }).then(res => {
+            setHandleNextButton(true);
+            console.log(res.data);
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            setIsLoading(false);
+        });
     };
-
-    const handleNext = () => {
-        dispatch(setEmail(`${inputEmail}@${domain}`));
-
-        navigation.navigate('SignupScreenPW');
-    }
-
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
-                    <Image source={backIcon} style={styles.icon}/>
-                    <Text style={styles.backButton}>계정 생성하기</Text>
+                    <Image source={backIcon} style={styles.icon} />
+                    <Text style={styles.backButton}>이메일 검증</Text>
                 </TouchableOpacity>
                 <View style={styles.stepIndicatorContainer}>
-                    <View style={styles.stepIndicatorActive}/>
-                    <View style={styles.stepIndicatorActive}/>
-                    <View style={styles.stepIndicatorInactive}/>
-                    <View style={styles.stepIndicatorInactive}/>
+                    <View style={styles.stepIndicatorActive} />
+                    <View style={styles.stepIndicatorActive} />
+                    <View style={styles.stepIndicatorInactive} />
+                    <View style={styles.stepIndicatorInactive} />
                 </View>
             </View>
 
             <View style={styles.content}>
-                <Text style={styles.stepText}>2. 이메일 주소를 입력해 주세요.</Text>
+                <Text style={styles.stepText}>2-1. 이메일로 전송된 코드를 입력해주세요.</Text>
                 <View style={styles.email}>
                     <View style={styles.emailContainer}>
                         <TextInput
                             style={styles.inputLeft}
-                            placeholder="예) ABCD1234"
+                            placeholder="123456"
                             placeholderTextColor="#787878"
-                            value={inputEmail}
-                            onChangeText={setInputEmail}
+                            value={inputEmailCode}
+                            onChangeText={setInputEmailCode}
                         />
-
                     </View>
-
-                    <Text style={styles.atSymbol}>@</Text>
-                    <ModalDropdown
-                        options={domains}
-                        defaultValue={domain}
-                        // 추가
-                        defaultIndex={0}
-                        onSelect={handleSelect}
-                        textStyle={[
-                            styles.dropdownText,
-                            isFocused ? styles.dropdownTextFocused : null
-                        ]}
-                        dropdownStyle={styles.dropdown}
-                        dropdownTextStyle={styles.dropdownTextStyle}
-                        style={styles.inputRight}
-                        adjustFrame={style => ({
-                            ...style,
-                            width: 150,
-                            right: 0,
-                        })}
-                    />
                 </View>
             </View>
 
             <View style={styles.nextbutton}>
-                {/*<TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignupScreenPW')}>*/}
-                <TouchableOpacity style={styles.button} onPress={handleNext}>
-                    <Text style={styles.buttonText}>다음</Text>
+                <TouchableOpacity style={!handleNextButton ? styles.button : styles.disableButton} onPress={verifyCode} disabled={handleNextButton || isLoading}>
+                    <Text style={!handleNextButton ? styles.buttonText : styles.disableButtonText}>인증</Text>
+                </TouchableOpacity>
+                {isLoading && <ActivityIndicator size="small" color="#6C99F0" style={styles.loader} />}
+            </View>
+
+            <View style={styles.nextbutton}>
+                <TouchableOpacity style={handleNextButton ? styles.button : styles.disableButton} onPress={() => navigation.navigate('SignupScreenPW')} disabled={!handleNextButton}>
+                    <Text style={handleNextButton ? styles.buttonText : styles.disableButtonText}>다음</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -162,7 +151,7 @@ const styles = StyleSheet.create({
     },
     inputLeft: {
         height: '100%',
-        textAlign: 'left'
+        textAlign: 'left',
     },
     atSymbol: {
         marginHorizontal: 10,
@@ -211,11 +200,28 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    disableButton: {
+        width: '80%',
+        height: 60,
+        backgroundColor: '#f8f8f8',
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    disableButtonText: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
+
+    },
     buttonText: {
-        color: '#FFFFFF',
+        color: '#ffffff',
         fontSize: 16,
         fontWeight: 'bold',
     },
+    loader: {
+        marginTop: 10,
+    },
 });
 
-export default SignupScreenEmail;
+export default SignupScreenValidationEmail;

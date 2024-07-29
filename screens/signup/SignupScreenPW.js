@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native';
-import {setEmail, setPassword} from "../store/reducers/register-slice";
+import {setEmail, setPassword} from "../../store/reducers/register-slice";
 import {useDispatch, useSelector} from "react-redux";
 
-const backIcon = require('../assets/back.png');
+const backIcon = require('../../assets/back.png');
 
 const SignupScreenEmail = ({ navigation }) => {
 
