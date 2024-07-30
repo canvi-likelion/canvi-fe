@@ -1,10 +1,28 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const ChooseDetails = ({ navigation }) => {
+const ChooseDetails = ({ navigation, route }) => {
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedHairStyle, setSelectedHairStyle] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [inputText, setInputText] = useState("");
+  const { selectedDay, selectedMonth } = route.params; // Access the passed date parameter
+
+  const handleSend = () => {
+    if (inputText.trim()) {
+      setMessages([...messages, inputText.trim()]);
+      setInputText("");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,7 +33,9 @@ const ChooseDetails = ({ navigation }) => {
         >
           <Text style={styles.navButtonText}>취소</Text>
         </TouchableOpacity>
-        <Text style={styles.navTitle}>8/6일의 일기</Text>
+        <Text style={styles.navTitle}>
+          {selectedMonth}월 {selectedDay}일의 일기
+        </Text>
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.navButtonText}>생성하기</Text>
         </TouchableOpacity>
@@ -125,13 +145,31 @@ const ChooseDetails = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.tooltipContainer}>
-        <View style={styles.tooltip}>
-          <Text style={styles.tooltipText}>
-            New feature! This is a handy template you can use for your apps (as
-            an onboarding tip feature for instance).
-          </Text>
-        </View>
+      <ScrollView style={styles.messageContainer}>
+        {messages.map((message, index) => (
+          <View
+            key={index}
+            style={[
+              styles.messageBubble,
+              { alignSelf: "flex-end", backgroundColor: "#4A90E2" },
+            ]}
+          >
+            <Text style={[styles.messageText, { color: "#FFF" }]}>
+              {message}
+            </Text>
+          </View>
+        ))}
+      </ScrollView>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="메시지를 입력하세요"
+        />
+        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+          <Icon name="send" size={20} color="#FFF" />
+        </TouchableOpacity>
       </View>
       <Text style={styles.footerText}>
         작성을 간단하게 입력해주시면 좋아요.
@@ -179,8 +217,8 @@ const styles = StyleSheet.create({
   selectionRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginBottom: 20,
+    justifyContent: "space-around",
+    marginBottom: 10,
   },
   selectionButton: {
     backgroundColor: "#FFFFFF",
@@ -203,17 +241,43 @@ const styles = StyleSheet.create({
   selectedButtonText: {
     color: "#FFFFFF",
   },
-  tooltipContainer: {
-    padding: 20,
+  messageContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  messageBubble: {
+    borderRadius: 15,
+    padding: 10,
+    marginVertical: 5,
+    alignSelf: "flex-start",
+  },
+  messageText: {
+    fontSize: 16,
+  },
+  inputContainer: {
+    flexDirection: "row",
     alignItems: "center",
+    padding: 10,
+    borderTopWidth: 1,
+    borderColor: "#E8E8E8",
   },
-  tooltip: {
+  input: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 10,
+    marginRight: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  sendButton: {
     backgroundColor: "#4A90E2",
-    borderRadius: 10,
-    padding: 15,
-  },
-  tooltipText: {
-    color: "#FFFFFF",
+    borderRadius: 20,
+    padding: 10,
   },
   footerText: {
     textAlign: "center",

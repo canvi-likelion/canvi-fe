@@ -28,6 +28,7 @@ const MakeDiary = ({ navigation }) => {
             <Image
               source={require("./assets/img/makeNewDiary1.png")}
               style={styles.mainImage}
+              resizeMode="contain"
             />
             <Text style={styles.mainTitle}>새로운 일기를 작성해볼까요?</Text>
             <Text style={styles.dateText}>Monday Jan 20, 2020</Text>
@@ -47,8 +48,9 @@ const MakeDiary = ({ navigation }) => {
         <View style={styles.select}>
           <View style={styles.content}>
             <Image
-              source={{ uri: "https://via.placeholder.com/150" }}
+              source={require("./assets/img/makeNewDiary2.png")}
               style={styles.mainImage}
+              resizeMode="contain"
             />
             <Text style={styles.mainTitle}>AI 일기를 작성해볼까요?</Text>
             <Text style={styles.dateText}>Monday Jan 20, 2020</Text>
@@ -96,8 +98,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   mainImage: {
-    width: 150,
-    height: 150,
+    width: SCREEN_WIDTH * 0.8,
+    height: SCREEN_WIDTH * 0.8,
     marginBottom: 20,
   },
   mainTitle: {

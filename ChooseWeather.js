@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const ChooseWeather = ({ navigation }) => {
+const ChooseWeather = ({ navigation, route }) => {
+  const { selectedDay, selectedMonth } = route.params; // Access the passed date parameter
+  const [selectedWeather, setSelectedWeather] = useState(null);
+
+  const weatherIcons = [
+    "weather-sunny",
+    "weather-partly-cloudy",
+    "weather-cloudy",
+    "weather-rainy",
+    "weather-pouring",
+    "weather-snowy",
+    "weather-fog",
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.navigation}>
@@ -13,58 +26,42 @@ const ChooseWeather = ({ navigation }) => {
         >
           <Text style={styles.navButtonText}>취소</Text>
         </TouchableOpacity>
-        <Text style={styles.navTitle}>8/6일의 일기</Text>
+        <Text style={styles.navTitle}>
+          {selectedMonth}월 {selectedDay}일의 일기
+        </Text>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate("ChooseDetails")}
+          onPress={() =>
+            navigation.navigate("ChooseDetails", {
+              selectedDay: selectedDay,
+              selectedMonth: selectedMonth,
+              selectedWeather: selectedWeather, // Pass the selected weather
+            })
+          }
         >
           <Text style={styles.navButtonText}>다음</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.subtitle}>그 날의 날씨는 어땠나요?</Text>
       <View style={styles.weatherContainer}>
-        <Icon
-          name="weather-sunny"
-          size={30}
-          color="#666"
-          style={styles.weatherIcon}
-        />
-        <Icon
-          name="weather-partly-cloudy"
-          size={30}
-          color="#666"
-          style={styles.weatherIcon}
-        />
-        <Icon
-          name="weather-cloudy"
-          size={30}
-          color="#666"
-          style={styles.weatherIcon}
-        />
-        <Icon
-          name="weather-rainy"
-          size={30}
-          color="#666"
-          style={styles.weatherIcon}
-        />
-        <Icon
-          name="weather-pouring"
-          size={30}
-          color="#666"
-          style={styles.weatherIcon}
-        />
-        <Icon
-          name="weather-snowy"
-          size={30}
-          color="#666"
-          style={styles.weatherIcon}
-        />
-        <Icon
-          name="weather-fog"
-          size={30}
-          color="#666"
-          style={styles.weatherIcon}
-        />
+        {weatherIcons.map((iconName, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => setSelectedWeather(iconName)}
+            style={[
+              styles.weatherIconContainer,
+              selectedWeather === iconName &&
+                styles.selectedWeatherIconContainer,
+            ]}
+          >
+            <Icon
+              name={iconName}
+              size={30}
+              color={selectedWeather === iconName ? "#4A90E2" : "#666"}
+              style={styles.weatherIcon}
+            />
+          </TouchableOpacity>
+        ))}
       </View>
     </SafeAreaView>
   );
@@ -109,6 +106,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
+  },
+  selectedWeatherIconContainer: {
+    borderColor: "#4A90E2",
   },
   weatherIcon: {
     marginHorizontal: 10,
