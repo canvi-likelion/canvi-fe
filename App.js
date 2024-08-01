@@ -23,8 +23,15 @@ import AIHelpDiary from "./AIHelpDiary";
 import AIWriteDiary from "./AIWriteDiary";
 import AICompleteDiary from "./AICompleteDiary";
 import MyPage from "./screens/mypage/MyPage";
+import UserInfo from "./UserInfo";
+import EditName from "./EditName";
+import Announcements from "./Announcements";
+import ChangePasswordStep1 from "./ChangePasswordStep1";
+import ChangePasswordStep2 from "./ChangePasswordStep2";
+import ChangePasswordStep3 from "./ChangePasswordStep3";
 import SignupScreenValidationEmail from "./screens/signup/SignupScreenValidationEmail";
 import ResetPassword from "./screens/find/ResetPassword";
+import { Use } from "react-native-svg";
 
 const Stack = createStackNavigator();
 
@@ -133,6 +140,33 @@ export default function App() {
               name="AICompleteDiary"
               component={AICompleteDiary}
               options={{ title: "AI Complete Diary" }}
+            />
+            <Stack.Screen
+              name="UserInfo"
+              component={UserInfo}
+              options={{ title: "UserInfo" }}
+            />
+            <Stack.Screen
+              name="EditName"
+              component={EditName}
+              options={{ title: "EditName" }}
+            />
+            <Stack.Screen
+              name="Announcements"
+              component={Announcements}
+              options={{ title: "Announcements" }}
+            />
+            <Stack.Screen
+              name="ChangePasswordStep1"
+              component={ChangePasswordStep1}
+            />
+            <Stack.Screen
+              name="ChangePasswordStep2"
+              component={ChangePasswordStep2}
+            />
+            <Stack.Screen
+              name="ChangePasswordStep3"
+              component={ChangePasswordStep3}
             />
           </Stack.Navigator>
         </NavigationContainer>

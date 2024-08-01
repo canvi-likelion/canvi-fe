@@ -12,8 +12,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { Calendar } from "react-native-calendars";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
+
+const Stack = createStackNavigator();
 
 const MainPage = ({ navigation }) => {
   const reduxUserInfo = useSelector((state) => state.userInfo);
@@ -122,6 +125,68 @@ const MainPage = ({ navigation }) => {
                   },
                 }}
               />
+            </View>
+          </View>
+        )}
+        {selectedTab === "마이페이지" && (
+          <View style={styles.myPageView}>
+            <View style={styles.myPageHeader}>
+              <Image
+                source={require("./assets/img/profile.png")}
+                style={styles.myPageProfileImage}
+              />
+              <Text style={styles.myPageHeaderText}>
+                {reduxUserInfo.userName}님,
+              </Text>
+              <Text style={styles.myPageSubHeaderText}>
+                오늘도 멋진 하루를 만들어봐요!
+              </Text>
+            </View>
+            <View style={styles.myPageInfoContainer}>
+              <Text style={styles.myPageSectionTitle}>내 정보</Text>
+              <TouchableOpacity
+                style={styles.myPageItem}
+                onPress={() => navigation.navigate("UserInfo")}
+              >
+                <Text style={styles.myPageItemText}>
+                  {reduxUserInfo.userName}님
+                </Text>
+                <Icon
+                  name="chevron-forward-outline"
+                  size={20}
+                  color="#A8A8A8"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.myPageSettingsContainer}>
+              <Text style={styles.myPageSectionTitle}>설정</Text>
+              <TouchableOpacity
+                style={styles.myPageItem}
+                onPress={() => navigation.navigate("Announcements")}
+              >
+                <Text style={styles.myPageItemText}>공지사항</Text>
+                <Icon
+                  name="chevron-forward-outline"
+                  size={20}
+                  color="#A8A8A8"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.myPageItem}>
+                <Text style={styles.myPageItemText}>앱설정</Text>
+                <Icon
+                  name="chevron-forward-outline"
+                  size={20}
+                  color="#A8A8A8"
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.myPageFooter}>
+              <TouchableOpacity>
+                <Text style={styles.myPageFooterText}>로그아웃</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.myPageFooterText}>탈퇴하기</Text>
+              </TouchableOpacity>
             </View>
           </View>
         )}
@@ -319,6 +384,69 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
     width: "100%",
+  },
+  myPageView: {
+    padding: 20,
+    backgroundColor: "#FFFFFF",
+    margin: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  myPageHeader: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  myPageProfileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 10,
+  },
+  myPageHeaderText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#4A90E2",
+  },
+  myPageSubHeaderText: {
+    fontSize: 14,
+    color: "#666666",
+  },
+  myPageInfoContainer: {
+    marginBottom: 20,
+  },
+  myPageSectionTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#AAAAAA",
+    marginBottom: 10,
+  },
+  myPageItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  myPageItemText: {
+    fontSize: 16,
+    color: "#4A90E2",
+  },
+  myPageSettingsContainer: {
+    marginBottom: 20,
+  },
+  myPageFooter: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 10,
+  },
+  myPageFooterText: {
+    fontSize: 14,
+    color: "#4A90E2",
+    marginHorizontal: 10,
   },
   footer: {
     flexDirection: "row",
