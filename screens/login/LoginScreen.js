@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native';
 import {requestApi} from "../../utils/apiSetting";
 import {useDispatch} from "react-redux";
-import {setAccessToken, setUserName} from "../../store/reducers/user-slice";
+import {setAccessToken, setEmail, setUserName} from "../../store/reducers/user-slice";
 
 const logoImage = require('../../assets/icon.png');
 const emailIcon = require('../../assets/email.png');
@@ -18,9 +18,10 @@ const LoginScreen = ({navigation}) => {
 
     const handleLogin = () => {
         requestApi.post("/api/auth/login", {
-            username: loginForm.username,
+            email: loginForm.email,
             password: loginForm.password
         }).then(res => {
+            dispatch(setEmail(res.data.result.email))
             dispatch(setUserName(res.data.result.username));
             dispatch(setAccessToken(res.data.result.accessToken));
             navigation.navigate('MainPage');
@@ -38,10 +39,10 @@ const LoginScreen = ({navigation}) => {
 
                 <View style={styles.inputContainer}>
                     <TextInput
-                        value={loginForm.username}
+                        value={loginForm.email}
                         onChangeText={(text) => setLoginForm((prev) => ({
                             ...prev,
-                            username: text
+                            email: text
                         }))}
                         style={styles.input}
                         placeholder="E-mail"
