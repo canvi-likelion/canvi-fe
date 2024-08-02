@@ -46,7 +46,7 @@ const ResetPassword = ({navigation}) => {
                             username: text
                         }))}
                         style={styles.input}
-                        placeholder="이름 # Email로 수정 예정"
+                        placeholder="E-mail"
                         placeholderTextColor="#787878"
                     />
                     <Image source={emailIcon} style={styles.icon}/>
