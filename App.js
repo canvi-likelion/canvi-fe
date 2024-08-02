@@ -29,6 +29,7 @@ import Announcements from "./Announcements";
 import ChangePasswordStep1 from "./ChangePasswordStep1";
 import ChangePasswordStep2 from "./ChangePasswordStep2";
 import ChangePasswordStep3 from "./ChangePasswordStep3";
+import ChatGptTestScreen from "./TestScreen";
 import SignupScreenValidationEmail from "./screens/signup/SignupScreenValidationEmail";
 import ResetPassword from "./screens/find/ResetPassword";
 import { Use } from "react-native-svg";
@@ -167,6 +168,10 @@ export default function App() {
             <Stack.Screen
               name="ChangePasswordStep3"
               component={ChangePasswordStep3}
+            />
+            <Stack.Screen
+              name="ChatGptTestScreen"
+              component={ChatGptTestScreen}
             />
           </Stack.Navigator>
         </NavigationContainer>

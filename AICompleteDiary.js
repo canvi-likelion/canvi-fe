@@ -1,8 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useState, useEffect } from "react";
 
-const AICompleteDiary = ({ navigation }) => {
+const AICompleteDiary = ({ navigation, route }) => {
+  const { gptResult } = route.params; // Access the passed date parameter
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -20,13 +30,9 @@ const AICompleteDiary = ({ navigation }) => {
         <Text style={styles.title}>
           명상의 힘: 마음을 가라앉히고 내면 평화 찾기
         </Text>
-        <Text style={styles.description}>
-          여행은 새로운 경험과 추억을 선사하지만, 올바른 준비가 필수입니다. 이번
-          블로그 포스트에서는 여행자가 가져가야 할 10가지 필수 아이템을 상세히
-          소개합니다. 첫째, 편안한 여행을 위한 맞춤형 여행 가방. 두 번째는
-          다양한 환경에 대비할 수 있는 다용도 의류... (내용이 더 길다면 여기까지
-          표시)
-        </Text>
+        <ScrollView>
+          <Text style={styles.description}>{gptResult}</Text>
+        </ScrollView>
         <TouchableOpacity
           style={styles.homeButton}
           onPress={() => navigation.navigate("MainPage")}
