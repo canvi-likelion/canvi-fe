@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -6,10 +7,38 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import { requestApi } from "./utils/apiSetting";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
 
 const AIWriteDiary = ({ navigation }) => {
+  const [prompt, setPrompt] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const reduxUserInfo = useSelector((state) => state.userInfo);
+
+  const handleGenerateText = () => {
+    setIsLoading(true);
+    requestApi
+      .post("/api/gpt", {
+        username: reduxUserInfo.userName,
+        prompt: prompt,
+      })
+      .then((res) => {
+        console.log(res.data.data.gptResult);
+        navigation.navigate("AICompleteDiary", {
+          gptResult: res.data.data.gptResult,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -45,14 +74,29 @@ const AIWriteDiary = ({ navigation }) => {
           </Text>
         </View>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.createButton}
         onPress={() => navigation.navigate("AICompleteDiary")}
+      > */}
+      {isLoading && (
+        <ActivityIndicator size="small" color="#6C99F0" style={styles.loader} />
+      )}
+      <TouchableOpacity
+        style={styles.createButton}
+        onPress={() => {
+          handleGenerateText();
+        }}
+        disabled={isLoading}
       >
         <Text style={styles.createButtonText}>생성하기</Text>
       </TouchableOpacity>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.textInput} placeholder="text..." />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Enter your prompt"
+          value={prompt}
+          onChangeText={setPrompt}
+        />
         <TouchableOpacity style={styles.sendButton}>
           <Text style={styles.sendButtonText}>➤</Text>
         </TouchableOpacity>
@@ -144,6 +188,9 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: "#FFFFFF",
     fontSize: 16,
+  },
+  loader: {
+    marginTop: 10,
   },
 });
 
