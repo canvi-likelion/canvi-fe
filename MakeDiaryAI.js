@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
   select: {
     width: SCREEN_WIDTH,
     alignItems: "center",
+    marginBottom: 50,
   },
 });
 

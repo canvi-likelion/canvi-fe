@@ -101,12 +101,12 @@ export default function App() {
             <Stack.Screen
               name="MyPage"
               component={MyPage}
-              options={{ title: "MyPage" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ResetPassword"
               component={ResetPassword}
-              options={{ title: "ResetPassword" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ChooseDrawStyle"
@@ -126,7 +126,7 @@ export default function App() {
             <Stack.Screen
               name="ChooseWeather"
               component={ChooseWeather}
-              options={{ title: "Choose Weather" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ChooseDetails"
@@ -136,32 +136,32 @@ export default function App() {
             <Stack.Screen
               name="AIHelpDiary"
               component={AIHelpDiary}
-              options={{ title: "AI Help Diary" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="AIWriteDiary"
               component={AIWriteDiary}
-              options={{ title: "AI Write Diary" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="AICompleteDiary"
               component={AICompleteDiary}
-              options={{ title: "AI Complete Diary" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="UserInfo"
               component={UserInfo}
-              options={{ title: "UserInfo" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="EditName"
               component={EditName}
-              options={{ title: "EditName" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Announcements"
               component={Announcements}
-              options={{ title: "Announcements" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ChangePasswordStep1"
