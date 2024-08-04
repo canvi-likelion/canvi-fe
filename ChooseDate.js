@@ -32,8 +32,8 @@ const ChooseDate = ({ navigation, route }) => {
       <Text style={styles.subtitle}>작성하고 싶은 날을 선택해주세요.</Text>
       <View style={styles.calendarContainer}>
         <Calendar
-          current={"2023-08-01"}
-          monthFormat={"M월"}
+          current={"2024-08-01"}
+          monthFormat={"yyyy M월"}
           onDayPress={(day) => {
             console.log("selected day", day);
             navigation.navigate("WriteDiary", {
