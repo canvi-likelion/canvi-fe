@@ -14,32 +14,33 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const backIcon = require('./assets/back.png');
-const mainimage = require("./assets/img/makeNewDiary1.png");
 
-const MakeDiary = ({ navigation }) => {
+const MakeDiaryAI = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
           <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
-      
+
         <View style={styles.select}>
           <View style={styles.content}>
-            <Image source={mainimage} style={styles.mainImage}/>
-            <Text style={styles.mainTitle}>새로운 일기를 작성해볼까요?</Text>
+            <Image
+              source={require("./assets/img/makeNewDiary2.png")}
+              style={styles.mainImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.mainTitle}>AI와 함께 일기를 작성해보아요!</Text>
             <Text style={styles.descriptionText}>
-              오늘 하루를 그림으로 기록해볼까요? 작은 순간들도 특별한 추억이 될 수 있어요.{"\n"}당신만의 색깔로 오늘을 표현해보세요. AI가 당신의 이야기를 멋진 그림으로 만들어줄 거예요.{"\n"}지금 시작해보세요!
+              AI와 함께 오늘의 특별한 순간을 기록해보세요.{"\n"}그림과 글로 당신의 이야기를 생생하게 담아드립니다.{"\n"}AI가 당신의 기억을 아름다운 작품으로 만들어줄 거예요.
             </Text>
-            <View style={styles.nextbutton}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("ChooseDrawStyle")}
-              >
-                <Text style={styles.buttonText}>일기 작성하기</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("AIHelpDiary")}
+            >
+              <Text style={styles.buttonText}>다음</Text>
+            </TouchableOpacity>
           </View>
-      </View>
+        </View>
 
       <View style={styles.profile}>
         <Image
@@ -121,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MakeDiary;
+export default MakeDiaryAI;

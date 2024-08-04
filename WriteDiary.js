@@ -5,13 +5,20 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+const backIcon = require('./assets/back.png');
 
 const WriteDiary = ({ navigation, route }) => {
   const { selectedMonth, selectedDay } = route.params;
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+          <Image source={backIcon} style={styles.icon} />
+      </TouchableOpacity>
+
       <View style={styles.navigation}>
         <TouchableOpacity
           style={styles.navButton}
@@ -53,7 +60,7 @@ const WriteDiary = ({ navigation, route }) => {
             for your apps (as an onboarding tip feature).
           </Text>
         </View>
-        <TouchableOpacity style={styles.tooltipButton}>
+        <TouchableOpacity style={styles.tooltipButton} onPress={() => navigation.navigate("MakeDiaryAI")}>
           <Text style={styles.tooltipButtonText}>✎</Text>
         </TouchableOpacity>
       </View>
@@ -62,6 +69,16 @@ const WriteDiary = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  backContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    marginVertical: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",

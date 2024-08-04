@@ -10,6 +10,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+const backIcon = require('./assets/back.png');
+
 const ChooseDetails = ({ navigation, route }) => {
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedHairStyle, setSelectedHairStyle] = useState(null);
@@ -26,6 +28,10 @@ const ChooseDetails = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+        <Image source={backIcon} style={styles.icon} />
+      </TouchableOpacity>
+
       <View style={styles.navigation}>
         <TouchableOpacity
           style={styles.navButton}
@@ -179,6 +185,16 @@ const ChooseDetails = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  backContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    marginVertical: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",

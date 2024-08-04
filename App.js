@@ -14,6 +14,7 @@ import SignupScreenPWCheck from "./screens/signup/SignupScreenPWCheck";
 import SignupOK from "./screens/signup/SignupOK";
 import MainPage from "./MainPage";
 import MakeDiary from "./MakeDiary";
+import MakeDiaryAI from "./MakeDiaryAI";
 import ChooseDrawStyle from "./ChooseDrawStyle";
 import ChooseDate from "./ChooseDate";
 import WriteDiary from "./WriteDiary";
@@ -92,6 +93,11 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="MakeDiaryAI"
+              component={MakeDiaryAI}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="MyPage"
               component={MyPage}
               options={{ title: "MyPage" }}
@@ -114,7 +120,7 @@ export default function App() {
             <Stack.Screen
               name="WriteDiary"
               component={WriteDiary}
-              options={{ title: "Write Diary" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ChooseWeather"
@@ -124,7 +130,7 @@ export default function App() {
             <Stack.Screen
               name="ChooseDetails"
               component={ChooseDetails}
-              options={{ title: "Choose Details" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="AIHelpDiary"
