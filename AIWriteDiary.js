@@ -13,10 +13,11 @@ import { requestApi } from "./utils/apiSetting";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 
-const AIWriteDiary = ({ navigation }) => {
+const AIWriteDiary = ({ navigation, route }) => {
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const reduxUserInfo = useSelector((state) => state.userInfo);
+  const { selectedMonth, selectedDay, selectedDate } = route.params;
 
   const handleGenerateText = () => {
     setIsLoading(true);
@@ -29,6 +30,9 @@ const AIWriteDiary = ({ navigation }) => {
         console.log(res.data.data.gptResult);
         navigation.navigate("AICompleteDiary", {
           gptResult: res.data.data.gptResult,
+          selectedMonth: selectedMonth,
+          selectedDay: selectedDay,
+          selectedDate: selectedDate,
         });
       })
       .catch((err) => {

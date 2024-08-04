@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const backIcon = require('./assets/back.png');
+const backIcon = require("./assets/back.png");
 
 const ChooseDetails = ({ navigation, route }) => {
   const [selectedGender, setSelectedGender] = useState(null);
@@ -31,7 +31,10 @@ const ChooseDetails = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={styles.backContainer}
+        onPress={() => navigation.goBack()}
+      >
         <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
 
@@ -190,8 +193,8 @@ const ChooseDetails = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   backContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 10,
     marginVertical: 20,
   },

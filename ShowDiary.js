@@ -12,31 +12,12 @@ import { useState, useEffect } from "react";
 import { requestApi } from "./utils/apiSetting";
 import { useSelector } from "react-redux";
 
-const AICompleteDiary = ({ navigation, route }) => {
-  const { gptResult, selectedMonth, selectedDay, selectedDate } = route.params; // Access the passed date parameter
+const ShowDiary = ({ navigation, route }) => {
+  const { selectedMonth, selectedDay, title, content } = route.params; // Access the passed date parameter
   const reduxUserInfo = useSelector((state) => state.userInfo);
 
   const handleDiary = () => {
-    requestApi
-      .post(
-        "/diaries",
-        {
-          title: "명상의 힘: 마음을 가라앉히고 내면 평화 찾기",
-          content: gptResult,
-          diaryDate: selectedDate,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${reduxUserInfo.accessToken}`,
-          },
-        }
-      )
-      .then((res) => {
-        navigation.navigate("MainPage");
-      })
-      .catch((err) => {
-        console.log(err, "hi");
-      });
+    navigation.navigate("MainPage");
   };
 
   return (
@@ -55,11 +36,9 @@ const AICompleteDiary = ({ navigation, route }) => {
           source={require("./assets/img/completeMakeAiDiary.png")}
           style={styles.image}
         />
-        <Text style={styles.title}>
-          명상의 힘: 마음을 가라앉히고 내면 평화 찾기
-        </Text>
+        <Text style={styles.title}>{title}</Text>
         <ScrollView>
-          <Text style={styles.description}>{gptResult}</Text>
+          <Text style={styles.description}>{content}</Text>
         </ScrollView>
         <TouchableOpacity
           style={styles.homeButton}
@@ -125,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AICompleteDiary;
+export default ShowDiary;
