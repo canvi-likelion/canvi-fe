@@ -9,14 +9,17 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const backIcon = require('./assets/back.png');
+const backIcon = require("./assets/back.png");
 
 const WriteDiary = ({ navigation, route }) => {
-  const { selectedMonth, selectedDay } = route.params;
+  const { selectedMonth, selectedDay, selectedDate } = route.params;
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
-          <Image source={backIcon} style={styles.icon} />
+      <TouchableOpacity
+        style={styles.backContainer}
+        onPress={() => navigation.goBack()}
+      >
+        <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
 
       <View style={styles.navigation}>
@@ -38,6 +41,7 @@ const WriteDiary = ({ navigation, route }) => {
             navigation.navigate("ChooseWeather", {
               selectedDay: selectedDay,
               selectedMonth: selectedMonth,
+              selectedDate: selectedDate,
             })
           }
         >
@@ -60,7 +64,16 @@ const WriteDiary = ({ navigation, route }) => {
             for your apps (as an onboarding tip feature).
           </Text>
         </View>
-        <TouchableOpacity style={styles.tooltipButton} onPress={() => navigation.navigate("MakeDiaryAI")}>
+        <TouchableOpacity
+          style={styles.tooltipButton}
+          onPress={() =>
+            navigation.navigate("MakeDiaryAI", {
+              selectedMonth: selectedMonth,
+              selectedDay: selectedDay,
+              selectedDate: selectedDate,
+            })
+          }
+        >
           <Text style={styles.tooltipButtonText}>✎</Text>
         </TouchableOpacity>
       </View>
@@ -70,8 +83,8 @@ const WriteDiary = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   backContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 10,
     marginVertical: 20,
   },

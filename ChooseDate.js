@@ -3,20 +3,26 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 
-const backIcon = require('./assets/back.png');
+const backIcon = require("./assets/back.png");
 
 const ChooseDate = ({ navigation, route }) => {
   console.log(route);
   return (
     <SafeAreaView style={styles.container}>
-     <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={styles.backContainer}
+        onPress={() => navigation.goBack()}
+      >
         <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
-      
+
       <View style={styles.navigation}>
-        <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
-        <Text style={styles.navButtonbackText}>취소</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.backContainer}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.navButtonbackText}>취소</Text>
+        </TouchableOpacity>
         <Text style={styles.navTitle}>오늘의 일기</Text>
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.navButtonnextText}>다음</Text>
@@ -26,13 +32,14 @@ const ChooseDate = ({ navigation, route }) => {
       <Text style={styles.subtitle}>작성하고 싶은 날을 선택해주세요.</Text>
       <View style={styles.calendarContainer}>
         <Calendar
-          current={"2023-08-01"}
-          monthFormat={"M월"}
+          current={"2024-08-01"}
+          monthFormat={"yyyy M월"}
           onDayPress={(day) => {
             console.log("selected day", day);
             navigation.navigate("WriteDiary", {
               selectedMonth: day.month,
               selectedDay: day.day,
+              selectedDate: day.dateString,
             });
           }}
           theme={{
@@ -49,8 +56,8 @@ const ChooseDate = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   backContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 10,
     marginVertical: 20,
   },
