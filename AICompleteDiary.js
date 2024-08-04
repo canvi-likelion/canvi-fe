@@ -15,7 +15,8 @@ import { useSelector } from "react-redux";
 const backIcon = require("./assets/back.png");
 
 const AICompleteDiary = ({ navigation, route }) => {
-  const { gptResult, selectedMonth, selectedDay, selectedDate } = route.params; // Access the passed date parameter
+  const { gptResult, selectedMonth, selectedDay, selectedDate, subject } =
+    route.params; // Access the passed date parameter
   const reduxUserInfo = useSelector((state) => state.userInfo);
 
   const handleDiary = () => {
@@ -23,7 +24,7 @@ const AICompleteDiary = ({ navigation, route }) => {
       .post(
         "/diaries",
         {
-          title: "명상의 힘: 마음을 가라앉히고 내면 평화 찾기",
+          title: subject,
           content: gptResult,
           diaryDate: selectedDate,
         },
@@ -58,9 +59,7 @@ const AICompleteDiary = ({ navigation, route }) => {
           source={require("./assets/img/completeMakeAiDiary.png")}
           style={styles.image}
         />
-        <Text style={styles.title}>
-          명상의 힘: 마음을 가라앉히고 내면 평화 찾기
-        </Text>
+        <Text style={styles.title}>{subject}</Text>
         <ScrollView style={styles.scrollview}>
           <Text style={styles.description}>{gptResult}</Text>
         </ScrollView>

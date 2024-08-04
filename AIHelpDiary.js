@@ -19,7 +19,10 @@ const AIHelpDiary = ({ navigation, route }) => {
   const diaryOptions = {
     "일상 기록": [
       { label: "하루의 일정", text: "오늘 하루 동안 어떤 일들을 하였나요?" },
-      { label: "특별한 순간", text: "오늘 가장 기억에 남는 순간은 언제였나요?" },
+      {
+        label: "특별한 순간",
+        text: "오늘 가장 기억에 남는 순간은 언제였나요?",
+      },
       { label: "장소 기록", text: "오늘 어떤 장소들을 방문했나요?" },
       { label: "식사 기록", text: "오늘 무엇을 먹었나요?" },
       { label: "새로운 경험", text: "오늘 새롭게 경험한 것이 있나요?" },
@@ -32,15 +35,24 @@ const AIHelpDiary = ({ navigation, route }) => {
       { label: "감정 단어", text: "오늘 느낀 감정을 한 단어로 표현해보세요." },
       { label: "감정의 변화", text: "하루 중 감정이 변한 순간이 있었나요?" },
       { label: "감정의 원인", text: "오늘 느낀 감정의 원인은 무엇인가요?" },
-      { label: "다른 사람과의 대화", text: "오늘 그 대화에서 어떤 감정을 느꼈나요?" },
+      {
+        label: "다른 사람과의 대화",
+        text: "오늘 그 대화에서 어떤 감정을 느꼈나요?",
+      },
       { label: "감정의 색깔", text: "오늘의 감정은 어떤 색깔이 떠오르나요?" },
     ],
     "목표 설정": [
-      { label: "단기 목표", text: "이번 주에 달성하고 싶은 목표는 무엇인가요?" },
+      {
+        label: "단기 목표",
+        text: "이번 주에 달성하고 싶은 목표는 무엇인가요?",
+      },
       { label: "장기 목표", text: "올해 안에 이루고 싶은 목표가 무엇인가요?" },
       { label: "동기부여", text: "동기 부여 방법은 무엇인가요?" },
       { label: "과거 경험", text: "이전에 비슷한 목표 설정 및 경험이 있나요?" },
-      { label: "목표 시각화", text: "목표를 달성했을 때의 모습을 상상해보세요." },
+      {
+        label: "목표 시각화",
+        text: "목표를 달성했을 때의 모습을 상상해보세요.",
+      },
       { label: "행동 계획", text: "목표 달성을 위해 어떻게 행동해야 하나요?" },
       { label: "하루 목표", text: "목표 달성을 위해 어떻게 행동해야 하나요?" },
     ],
@@ -48,10 +60,19 @@ const AIHelpDiary = ({ navigation, route }) => {
       { label: "오늘의 성찰", text: "오늘 하루를 돌아보며 무엇을 배웠나요?" },
       { label: "감사한 점", text: "오늘 하루 중 감사한 순간은 무엇이었나요?" },
       { label: "감정 성찰", text: "오늘 느낀 감정들을 되돌아보세요." },
-      { label: "도전과 극복", text: "오늘 직면한 가장 큰 도전은 무엇이었나요?" },
-      { label: "사고 전환", text: "오늘 하루 중 생각을 바꾸게 된 순간이 있나요?" },
+      {
+        label: "도전과 극복",
+        text: "오늘 직면한 가장 큰 도전은 무엇이었나요?",
+      },
+      {
+        label: "사고 전환",
+        text: "오늘 하루 중 생각을 바꾸게 된 순간이 있나요?",
+      },
       { label: "목표 반성", text: "오늘 세운 목표를 잘 달성했나요?" },
-      { label: "미래 계획", text: "내일 어떻게 더 나은 하루를 만들 수 있을까요?" },
+      {
+        label: "미래 계획",
+        text: "내일 어떻게 더 나은 하루를 만들 수 있을까요?",
+      },
     ],
   };
 
@@ -65,7 +86,10 @@ const AIHelpDiary = ({ navigation, route }) => {
       </TouchableOpacity>
 
       <View style={styles.navigation}>
-        <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backContainer}
+          onPress={() => navigation.goBack()}
+        >
           <Text style={styles.navButtonbackText}>취소</Text>
         </TouchableOpacity>
         <Text style={styles.navTitle}>도와드릴게요.</Text>
@@ -79,7 +103,10 @@ const AIHelpDiary = ({ navigation, route }) => {
         {["일상 기록", "감정 표현", "목표 설정", "회고와 성찰"].map((type) => (
           <TouchableOpacity
             key={type}
-            style={[styles.tabButton, selectedTab === type && styles.activeTabButton]}
+            style={[
+              styles.tabButton,
+              selectedTab === type && styles.activeTabButton,
+            ]}
             onPress={() => setSelectedTab(type)}
           >
             <Text
@@ -104,13 +131,14 @@ const AIHelpDiary = ({ navigation, route }) => {
             </View>
             <TouchableOpacity
               style={styles.chooseButton}
-              onPress={() =>
+              onPress={() => {
                 navigation.navigate("AIWriteDiary", {
                   selectedMonth: selectedMonth,
                   selectedDay: selectedDay,
                   selectedDate: selectedDate,
-                })
-              }
+                  subject: option.text,
+                });
+              }}
             >
               <Text style={styles.chooseButtonText}>작성하기</Text>
             </TouchableOpacity>

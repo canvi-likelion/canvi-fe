@@ -11,7 +11,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { requestApi } from "./utils/apiSetting";
+import { useSelector } from "react-redux";
 
 const backIcon = require("./assets/back.png");
 
@@ -20,13 +22,38 @@ const ChooseDetails = ({ navigation, route }) => {
   const [selectedHairStyle, setSelectedHairStyle] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
-  const { selectedDay, selectedMonth } = route.params; // Access the passed date parameter
+  const reduxUserInfo = useSelector((state) => state.userInfo);
+  const { selectedDay, selectedMonth, selectedDate, title, content } =
+    route.params; // Access the passed date parameter
 
   const handleSend = () => {
     if (inputText.trim()) {
       setMessages([...messages, inputText.trim()]);
       setInputText("");
     }
+  };
+
+  const handleDiary = () => {
+    requestApi
+      .post(
+        "/diaries",
+        {
+          title: title,
+          content: content,
+          diaryDate: selectedDate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${reduxUserInfo.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        navigation.navigate("MainPage");
+      })
+      .catch((err) => {
+        console.log(err, "hi");
+      });
   };
 
   return (
@@ -49,12 +76,13 @@ const ChooseDetails = ({ navigation, route }) => {
           {selectedMonth}월 {selectedDay}일의 일기
         </Text>
         <TouchableOpacity style={styles.navButton}>
-          <Text style={styles.navButtonnextText} onPress={() => navigation.navigate("MainPage")}>생성</Text>
+          <Text style={styles.navButtonnextText} onPress={() => handleDiary()}>
+            생성
+          </Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.subtitle}>세부 정보를 선택해주세요.</Text>
       <View style={styles.selectionContainer}>
-
         <Text style={styles.selectionTitle}>성별</Text>
         <View style={styles.selectionRow}>
           <TouchableOpacity
@@ -264,7 +292,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 10,
   },
   selectedButton: {
