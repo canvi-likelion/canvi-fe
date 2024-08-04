@@ -35,12 +35,14 @@ const StartScreen = ({ navigation }) => {
         {entries.map((entry, index) => renderItem(entry, index))}
       </Swiper>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.buttonText}>회원가입</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonOutline} onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.buttonOutlineText}>로그인</Text>
-      </TouchableOpacity>
+      <View style={styles.bottombox}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.buttonText}>회원가입</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonOutline} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.buttonOutlineText}>로그인</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 30,
   },
   dot: {
     backgroundColor: '#E0E0E0',
@@ -117,6 +120,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  bottombox: {
+    marginBottom: 40,
+    width: '100%',
+    alignItems: 'center',
+  }
 });
 
 export default StartScreen;

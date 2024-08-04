@@ -84,12 +84,12 @@ export default function App() {
             <Stack.Screen
               name="MainPage"
               component={MainPage}
-              options={{ title: "Main Page" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="MakeDiary"
               component={MakeDiary}
-              options={{ title: "Make Diary" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="MyPage"
@@ -104,12 +104,12 @@ export default function App() {
             <Stack.Screen
               name="ChooseDrawStyle"
               component={ChooseDrawStyle}
-              options={{ title: "Choose Draw Style" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ChooseDate"
               component={ChooseDate}
-              options={{ title: "Choose Date" }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="WriteDiary"

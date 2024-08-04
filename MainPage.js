@@ -16,7 +16,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
+const icon = require('./assets/icon.png');
+const checkicon = require('./assets/checkicon.png');
 const Stack = createStackNavigator();
+
+const ex1 = require('./assets/ex/ex1.png');
+const ex2 = require('./assets/ex/ex2.png');
+const ex3 = require('./assets/ex/ex3.png');
 
 const MainPage = ({ navigation }) => {
   const reduxUserInfo = useSelector((state) => state.userInfo);
@@ -28,18 +34,25 @@ const MainPage = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.topheader}>
+        <Image source={icon} style={styles.icon}/>
+        <Image source={checkicon} style={styles.checkicon}/>
+      </View>
+      <View style={styles.scrollContainer}>
         {selectedTab === "홈" && (
           <>
             <View style={styles.header}>
-              <Image
-                source={require("./assets/img/profile.png")}
-                style={styles.profileImage}
-              />
-              <Text style={styles.headerText}>{reduxUserInfo.userName}님,</Text>
-              <Text style={styles.subHeaderText}>
-                오늘의 하루도 기록해볼까요?
-              </Text>
+              <View style={styles.userinform}>
+                <Image
+                  source={require("./assets/img/profile.png")}
+                  style={styles.profileImage}
+                />
+                <View style={styles.textbox}>
+                  <Text style={styles.headerText}>{reduxUserInfo.userName}님,</Text>
+                  <Text style={styles.subHeaderText}>
+                  오늘의 하루도 기록해볼까요?</Text>
+                </View>
+              </View>
               <TouchableOpacity
                 style={styles.startButton}
                 onPress={() => navigation.navigate("MakeDiary")}
@@ -47,47 +60,80 @@ const MainPage = ({ navigation }) => {
                 <Text style={styles.startButtonText}>Let's Start</Text>
               </TouchableOpacity>
             </View>
+            
             <ScrollView
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
               style={styles.blogScrollContainer}
+              contentContainerStyle={styles.blogScrollContent}
+              snapToInterval={SCREEN_WIDTH * 0.85 + 13}
+              decelerationRate="fast"
             >
               <View style={styles.blogCard}>
                 <Image
-                  source={require("./assets/img/mainPageCard.png")}
+                  source={ex1}
                   style={styles.blogImage}
                 />
                 <Text style={styles.blogTitle}>
-                  어제의 {reduxUserInfo.userName}님은?
+                  엊그제 {reduxUserInfo.userName}님은?
                 </Text>
-                <Text style={styles.blogDate}>Monday Jan 20, 2020</Text>
+                <Text style={styles.blogDate}>월요일 8월 5일, 2024</Text>
                 <Text style={styles.blogContent}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Ornare pretium placerat ut platea. Purus blandit integer
-                  sagittis massa vel est hac.
+                  엊그제 {reduxUserInfo.userName}님은 도심 속 숨겨진 공원을 발견했습니다.{"\n"}낯선 길에서 마주친 멋진 풍경과 새 친구를 사귀었어요.{"\n"}저녁에는 저녁 노을을 보며 하루의 피로를 날렸습니다.
                 </Text>
-                <TouchableOpacity style={styles.readBlogButton}>
-                  <Text style={styles.readBlogButtonText}>Read Full Blog</Text>
-                </TouchableOpacity>
+                <View style={styles.readcontainer}>
+                  <Text style={styles.readcontainertext}>
+                    엊그제 일기를 다시 읽어보세요.
+                  </Text>
+                  <TouchableOpacity style={styles.readBlogButton}>
+                    <Text style={styles.readBlogButtonText}>HAMA</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
+
               <View style={styles.blogCard}>
                 <Image
-                  source={require("./assets/img/mainPageCard.png")}
+                  source={ex2}
                   style={styles.blogImage}
                 />
                 <Text style={styles.blogTitle}>
                   어제의 {reduxUserInfo.userName}님은?
                 </Text>
-                <Text style={styles.blogDate}>Monday Jan 20, 2020</Text>
+                <Text style={styles.blogDate}>화요일 8월 6일, 2024</Text>
                 <Text style={styles.blogContent}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Ornare pretium placerat ut platea. Purus blandit integer
-                  sagittis massa vel est hac.
+                  어제의 {reduxUserInfo.userName}님은 바쁜 일상 속에서도 소소한 행복을 찾았습니다.{"\n"}평소와 다른 길로 돌아가는 산책에서 새로운 영감을 얻었어요.{"\n"}마지막엔 좋아하는 카페에서 달콤한 디저트로 하루를 완성했습니다.
                 </Text>
-                <TouchableOpacity style={styles.readBlogButton}>
-                  <Text style={styles.readBlogButtonText}>Read Full Blog</Text>
-                </TouchableOpacity>
+                <View style={styles.readcontainer}>
+                  <Text style={styles.readcontainertext}>
+                    어제 일기를 다시 읽어보세요.
+                  </Text>
+                  <TouchableOpacity style={styles.readBlogButton}>
+                    <Text style={styles.readBlogButtonText}>HAMA</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.blogCard}>
+                <Image
+                  source={ex3}
+                  style={styles.blogImage}
+                />
+                <Text style={styles.blogTitle}>
+                  사흘 전 {reduxUserInfo.userName}님은?
+                </Text>
+                <Text style={styles.blogDate}>일요일 8월 4일, 2024</Text>
+                <Text style={styles.blogContent}>
+                  사흘 전 {reduxUserInfo.userName}님은 새로운 카페를 탐방했습니다.{"\n"}이국적인 분위기와 독특한 메뉴를 즐겼어요.{"\n"}저녁에는 친구들과 함께 새로운 맛집을 찾아가 대화를 나눴습니다.
+                </Text>
+                <View style={styles.readcontainer}>
+                  <Text style={styles.readcontainertext}>
+                    사흘 전 일기를 다시 읽어보세요.
+                  </Text>
+                  <TouchableOpacity style={styles.readBlogButton}>
+                    <Text style={styles.readBlogButtonText}>HAMA</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </ScrollView>
           </>
@@ -190,7 +236,8 @@ const MainPage = ({ navigation }) => {
             </View>
           </View>
         )}
-      </ScrollView>
+      </View>
+
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.iconContainer}
@@ -198,8 +245,8 @@ const MainPage = ({ navigation }) => {
         >
           <Icon
             name="home-outline"
-            size={30}
-            color={selectedTab === "홈" ? "#4A90E2" : "#A8A8A8"}
+            size={28}
+            color={selectedTab === "홈" ? "#6C99F0" : "#B9B9B9"}
           />
           <Text
             style={[
@@ -216,8 +263,8 @@ const MainPage = ({ navigation }) => {
         >
           <Icon
             name="calendar-outline"
-            size={30}
-            color={selectedTab === "캘린더" ? "#4A90E2" : "#A8A8A8"}
+            size={28}
+            color={selectedTab === "캘린더" ? "#6C99F0" : "#B9B9B9"}
           />
           <Text
             style={[
@@ -234,8 +281,8 @@ const MainPage = ({ navigation }) => {
         >
           <Icon
             name="person-outline"
-            size={30}
-            color={selectedTab === "마이페이지" ? "#4A90E2" : "#A8A8A8"}
+            size={28}
+            color={selectedTab === "마이페이지" ? "#6C99F0" : "#B9B9B9"}
           />
           <Text
             style={[
@@ -252,6 +299,20 @@ const MainPage = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  topheader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
+  checkicon: {
+    width: 20,
+    height: 20,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",
@@ -259,15 +320,18 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
   },
+  userinform: {
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
   header: {
-    padding: 20,
+    padding: 15,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: "#E8E8E8",
-    borderRadius: 10,
+    borderRadius: 15,
     marginHorizontal: 20,
-    marginTop: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -275,74 +339,97 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginBottom: 10,
+    width: 65,
+    height: 65,
+    marginRight: 10,
+  },
+  textbox: {
+    justifyContent: 'center',
   },
   headerText: {
-    fontSize: 16,
+    color: "#22215B",
+    fontSize: 18.84,
     fontWeight: "bold",
+    marginBottom: 3,
   },
   subHeaderText: {
-    fontSize: 14,
+    fontSize: 13.3,
     color: "#666666",
-    marginBottom: 10,
+    marginBottom: 5,
   },
   startButton: {
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#6C99F0",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 15,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   startButtonText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 16.49,
+    fontWeight: "bold",
   },
   blogScrollContainer: {
-    marginTop: 20,
+    marginTop: 10,
+  },
+  blogScrollContent: {
+    alignItems: 'center',
+    paddingHorizontal: 10,
   },
   blogCard: {
+    flex: 1,
     padding: 20,
     backgroundColor: "#FFFFFF",
     marginHorizontal: 10,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-    width: SCREEN_WIDTH * 0.8,
+    borderRadius: 15,
+    width: SCREEN_WIDTH * 0.85,
+    height: "auto",
+    justifyContent: "space-between",
   },
   blogImage: {
     width: "100%",
-    height: 150,
-    borderRadius: 10,
+    height: 180,
+    borderRadius: 20,
     marginBottom: 10,
   },
   blogTitle: {
-    fontSize: 18,
+    fontSize: 19.2,
     fontWeight: "bold",
+    color: "#22215B",
+    marginBottom: 10,
   },
   blogDate: {
-    fontSize: 14,
-    color: "#666666",
+    fontSize: 8.96,
+    color: "#22215B",
     marginBottom: 10,
   },
   blogContent: {
-    fontSize: 14,
+    fontSize: 10,
     color: "#666666",
     marginBottom: 10,
   },
+  readcontainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  readcontainertext: {
+    fontSize: 8.96,
+    fontWeight: "bold",
+  },
   readBlogButton: {
-    backgroundColor: "#4A90E2",
-    paddingVertical: 10,
+    backgroundColor: "#EEF7FE",
     paddingHorizontal: 20,
     borderRadius: 5,
+    height: 25,
   },
   readBlogButtonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
+    color: "#22215B",
+    fontSize: 8.96,
+    fontWeight: "bold",
+    marginTop: 6,
   },
   calendarView: {
     backgroundColor: "#FFFFFF",
@@ -452,17 +539,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     paddingVertical: 10,
-    backgroundColor: "#F8F8F8",
+    backgroundColor: "#FFFFFF",
     borderTopWidth: 1,
     borderColor: "#E8E8E8",
-    borderRadius: 20,
+    borderRadius: 70,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   iconContainer: {
     alignItems: "center",
   },
   footerText: {
-    fontSize: 14,
-    color: "#A8A8A8",
+    fontSize: 10,
+    color: "#B9B9B9",
     marginTop: 5,
   },
   activeText: {

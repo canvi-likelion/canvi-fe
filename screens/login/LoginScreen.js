@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { requestApi } from "../../utils/apiSetting";
 import { useDispatch } from "react-redux";
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "#333333",
+    color: "#22215B",
     marginBottom: 40,
   },
   inputContainer: {
@@ -156,9 +157,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   iconp: {
-    width: 28,
+    width: 20,
     height: 28,
-    marginRight: 5,
+    marginRight: 10,
   },
   button: {
     width: "80%",

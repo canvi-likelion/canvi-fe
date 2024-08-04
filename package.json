@@ -15,7 +15,7 @@
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.3",
     "eas-cli": "^10.2.1",
-    "expo": "^51.0.22",
+    "expo": "^51.0.24",
     "expo-status-bar": "~1.12.1",
     "install": "^0.13.0",
     "npm": "^10.8.2",

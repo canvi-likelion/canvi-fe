@@ -9,16 +9,18 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const backIcon = require('./assets/back.png');
+
 const images = {
-  1: require("./assets/img/drawStyle1.png"),
-  2: require("./assets/img/drawStyle2.png"),
-  3: require("./assets/img/drawStyle3.png"),
-  4: require("./assets/img/drawStyle4.png"),
-  5: require("./assets/img/drawStyle5.png"),
-  6: require("./assets/img/drawStyle6.png"),
-  7: require("./assets/img/drawStyle7.png"),
-  8: require("./assets/img/drawStyle8.png"),
-  9: require("./assets/img/drawStyle9.png"),
+  1: require("./assets/img/drawStyle9.png"),
+  2: require("./assets/img/drawStyle1.png"),
+  3: require("./assets/img/drawStyle2.png"),
+  4: require("./assets/img/drawStyle3.png"),
+  5: require("./assets/img/drawStyle4.png"),
+  6: require("./assets/img/drawStyle5.png"),
+  7: require("./assets/img/drawStyle6.png"),
+  8: require("./assets/img/drawStyle7.png"),
+  9: require("./assets/img/drawStyle8.png"),
 };
 
 const data = [
@@ -46,15 +48,14 @@ const ChooseDrawStyle = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.backButtonText}>{"<"}</Text>
+      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+        <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
+
       <View style={styles.header}>
         <Text style={styles.headerText}>어떤 스타일로 그릴까요?</Text>
       </View>
+      <View style={styles.gridcontainer}>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -62,6 +63,7 @@ const ChooseDrawStyle = ({ navigation }) => {
         numColumns={3}
         contentContainerStyle={styles.grid}
       />
+      </View>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>일기 작성하기</Text>
       </TouchableOpacity>
@@ -70,25 +72,31 @@ const ChooseDrawStyle = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  backContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    marginVertical: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",
     justifyContent: "space-between",
   },
-  backButton: {
-    margin: 20,
-  },
-  backButtonText: {
-    fontSize: 24,
-    color: "#000",
-  },
   header: {
     alignItems: "center",
   },
   headerText: {
-    fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
+    fontSize: 19.2,
+    color: "#22215B",
+  },
+  gridcontainer: {
+    marginHorizontal: 15,
   },
   grid: {
     paddingHorizontal: 20,
@@ -96,35 +104,28 @@ const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
     alignItems: "center",
-    margin: 10,
-    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     padding: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
   },
   gridImage: {
-    width: 80,
-    height: 80,
-    marginBottom: 10,
+    width: 100,
+    height: 100,
   },
   gridTitle: {
-    fontSize: 14,
+    fontSize: 8.96,
     color: "#666666",
   },
   button: {
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#6C99F0",
     paddingVertical: 15,
-    margin: 20,
+    margin: 30,
     borderRadius: 25,
     alignItems: "center",
   },
   buttonText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: "bold",
   },
 });
 
