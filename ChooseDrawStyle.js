@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -36,15 +36,20 @@ const data = [
 ];
 
 const ChooseDrawStyle = ({ navigation }) => {
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.gridItem}
-      onPress={() => navigation.navigate("ChooseDate")}
-    >
-      <Image source={item.image} style={styles.gridImage} />
-      <Text style={styles.gridTitle}>{item.title}</Text>
-    </TouchableOpacity>
-  );
+  const [selectedId, setSelectedId] = useState(null);
+
+  const renderItem = ({ item }) => {
+    const isSelected = selectedId === item.id;
+    return (
+      <TouchableOpacity
+        style={[styles.gridItem, isSelected && styles.selectedGridItem]}
+        onPress={() => setSelectedId(item.id)}
+      >
+        <Image source={item.image} style={styles.gridImage} />
+        <Text style={styles.gridTitle}>{item.title}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,7 +69,7 @@ const ChooseDrawStyle = ({ navigation }) => {
         contentContainerStyle={styles.grid}
       />
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ChooseDate")}>
         <Text style={styles.buttonText}>일기 작성하기</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -106,6 +111,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     padding: 10,
+    opacity: 1,
+  },
+  selectedGridItem: {
+    opacity: 0.3,
   },
   gridImage: {
     width: 100,
