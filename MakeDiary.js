@@ -13,38 +13,35 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
+const backIcon = require('./assets/back.png');
+const mainimage = require("./assets/img/makeNewDiary1.png");
+
 const MakeDiary = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.backButtonText}>{"<"}</Text>
+      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+          <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
-      <ScrollView horizontal pagingEnabled indicatorStyle="white">
+      
+        <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
         <View style={styles.select}>
           <View style={styles.content}>
-            <Image
-              source={require("./assets/img/makeNewDiary1.png")}
-              style={styles.mainImage}
-              resizeMode="contain"
-            />
+            <Image source={mainimage} style={styles.mainImage}/>
             <Text style={styles.mainTitle}>새로운 일기를 작성해볼까요?</Text>
-            <Text style={styles.dateText}>Monday Jan 20, 2020</Text>
             <Text style={styles.descriptionText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare
-              pretium placerat ut platea. Purus blandit integer sagittis massa
-              vel est hac.
+              오늘 하루를 그림으로 기록해볼까요? 작은 순간들도 특별한 추억이 될 수 있어요.{"\n"}당신만의 색깔로 오늘을 표현해보세요. AI가 당신의 이야기를 멋진 그림으로 만들어줄 거예요.{"\n"}지금 시작해보세요!
             </Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("ChooseDrawStyle")}
-            >
-              <Text style={styles.buttonText}>일기 작성하기</Text>
-            </TouchableOpacity>
+            <View style={styles.nextbutton}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("ChooseDrawStyle")}
+              >
+                <Text style={styles.buttonText}>일기 작성하기</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+
         <View style={styles.select}>
           <View style={styles.content}>
             <Image
@@ -52,18 +49,15 @@ const MakeDiary = ({ navigation }) => {
               style={styles.mainImage}
               resizeMode="contain"
             />
-            <Text style={styles.mainTitle}>AI 일기를 작성해볼까요?</Text>
-            <Text style={styles.dateText}>Monday Jan 20, 2020</Text>
+            <Text style={styles.mainTitle}>AI와 함께 일기를 작성해보아요!</Text>
             <Text style={styles.descriptionText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare
-              pretium placerat ut platea. Purus blandit integer sagittis massa
-              vel est hac.
+              AI와 함께 오늘의 특별한 순간을 기록해보세요.{"\n"}그림과 글로 당신의 이야기를 생생하게 담아드립니다.{"\n"}AI가 당신의 기억을 아름다운 작품으로 만들어줄 거예요.
             </Text>
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate("AIHelpDiary")}
             >
-              <Text style={styles.buttonText}>일기 작성하기</Text>
+              <Text style={styles.buttonText}>다음</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -80,62 +74,68 @@ const MakeDiary = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  backContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    marginVertical: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",
     justifyContent: "space-between",
-  },
-  backButton: {
-    margin: 20,
-  },
-  backButtonText: {
-    paddingRight: 1000,
-    fontSize: 24,
-    color: "#000",
   },
   content: {
     alignItems: "center",
     paddingHorizontal: 20,
   },
   mainImage: {
-    width: SCREEN_WIDTH * 0.8,
-    height: SCREEN_WIDTH * 0.8,
-    marginBottom: 20,
+    height: 130,
+    marginVertical: 30,
   },
   mainTitle: {
-    fontSize: 20,
+    fontSize: 19.2,
     fontWeight: "bold",
     textAlign: "center",
-  },
-  dateText: {
-    fontSize: 14,
-    color: "#666666",
-    marginBottom: 10,
+    color: '#22215B',
+    marginVertical: 15,
   },
   descriptionText: {
-    fontSize: 14,
+    fontSize: 8.96,
     color: "#666666",
     textAlign: "center",
+    marginBottom: 50,
+  },
+  nextbutton: {
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "#4A90E2",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 25,
+    width: 280,
+    height: 50,
+    backgroundColor: '#6C99F0',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: "bold",
   },
   profile: {
     alignItems: "center",
     marginBottom: 20,
   },
   profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 80,
+    height: 80,
+    marginBottom: 60,
   },
   select: {
     width: SCREEN_WIDTH,
