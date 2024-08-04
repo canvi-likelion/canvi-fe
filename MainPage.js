@@ -138,6 +138,7 @@ const MainPage = ({ navigation }) => {
             </ScrollView>
           </>
         )}
+
         {selectedTab === "캘린더" && (
           <View style={styles.calendarView}>
             <View style={styles.calendarHeader}>
@@ -156,6 +157,7 @@ const MainPage = ({ navigation }) => {
             </View>
             <View style={styles.calendarContainer}>
               <Calendar
+                monthFormat={"M월"}
                 style={styles.calendar}
                 theme={{
                   arrowColor: "#4A90E2",
@@ -174,6 +176,7 @@ const MainPage = ({ navigation }) => {
             </View>
           </View>
         )}
+
         {selectedTab === "마이페이지" && (
           <View style={styles.myPageView}>
             <View style={styles.myPageHeader}>
@@ -182,7 +185,7 @@ const MainPage = ({ navigation }) => {
                 style={styles.myPageProfileImage}
               />
               <Text style={styles.myPageHeaderText}>
-                {reduxUserInfo.userName}님,
+                {reduxUserInfo.userName}<Text style={styles.myPageSubHeaderText}>{" "}님,</Text>
               </Text>
               <Text style={styles.myPageSubHeaderText}>
                 오늘도 멋진 하루를 만들어봐요!
@@ -199,8 +202,8 @@ const MainPage = ({ navigation }) => {
                 </Text>
                 <Icon
                   name="chevron-forward-outline"
-                  size={20}
-                  color="#A8A8A8"
+                  size={18}
+                  color="#22215B"
                 />
               </TouchableOpacity>
             </View>
@@ -213,23 +216,25 @@ const MainPage = ({ navigation }) => {
                 <Text style={styles.myPageItemText}>공지사항</Text>
                 <Icon
                   name="chevron-forward-outline"
-                  size={20}
-                  color="#A8A8A8"
+                  size={18}
+                  color="#22215B"
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.myPageItem}>
                 <Text style={styles.myPageItemText}>앱설정</Text>
                 <Icon
                   name="chevron-forward-outline"
-                  size={20}
-                  color="#A8A8A8"
+                  size={18}
+                  color="#22215B"
                 />
               </TouchableOpacity>
             </View>
+
             <View style={styles.myPageFooter}>
               <TouchableOpacity>
                 <Text style={styles.myPageFooterText}>로그아웃</Text>
               </TouchableOpacity>
+              <Text style={styles.myPageFooterText}>|</Text>
               <TouchableOpacity>
                 <Text style={styles.myPageFooterText}>탈퇴하기</Text>
               </TouchableOpacity>
@@ -433,7 +438,7 @@ const styles = StyleSheet.create({
   },
   calendarView: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 20,
     margin: 20,
     shadowColor: "#000",
@@ -448,68 +453,63 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   calendarProfileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 10,
+    width: 65,
+    height: 65,
+    marginRight: 15,
   },
   calendarHeaderText: {
-    fontSize: 18,
+    fontSize: 18.84,
     fontWeight: "bold",
+    color: "#22215B",
+    marginBottom: 3,
   },
   calendarSubHeaderText: {
-    fontSize: 16,
+    fontSize: 13.3,
     color: "#666666",
+    marginBottom: 5,
   },
   calendarContainer: {
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    borderRadius: 20,
+    overflow: "hidden",
     backgroundColor: "#FFFFFF",
-    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
-    width: "100%",
   },
   myPageView: {
-    padding: 20,
-    backgroundColor: "#FFFFFF",
-    margin: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    marginHorizontal: 20,
   },
   myPageHeader: {
     alignItems: "center",
     marginBottom: 20,
   },
   myPageProfileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 70,
+    height: 70,
     marginBottom: 10,
   },
   myPageHeaderText: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
-    color: "#4A90E2",
+    color: "#6C99F0",
   },
   myPageSubHeaderText: {
-    fontSize: 14,
-    color: "#666666",
+    fontSize: 15,
+    color: "#22215B",
+    fontWeight: "bold",
   },
   myPageInfoContainer: {
     marginBottom: 20,
   },
   myPageSectionTitle: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "bold",
     color: "#AAAAAA",
-    marginBottom: 10,
+    margin: 10,
   },
   myPageItem: {
     flexDirection: "row",
@@ -519,8 +519,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   myPageItemText: {
-    fontSize: 16,
-    color: "#4A90E2",
+    fontSize: 15,
+    color: "#22215B",
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   myPageSettingsContainer: {
     marginBottom: 20,
@@ -529,10 +531,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     paddingVertical: 10,
+    marginTop: "auto",
   },
   myPageFooterText: {
     fontSize: 14,
-    color: "#4A90E2",
+    color: "#666666",
     marginHorizontal: 10,
   },
   footer: {

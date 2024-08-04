@@ -16,7 +16,7 @@ const ChooseDate = ({ navigation, route }) => {
       <View style={styles.navigation}>
         <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
         <Text style={styles.navButtonbackText}>취소</Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
         <Text style={styles.navTitle}>오늘의 일기</Text>
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.navButtonnextText}>다음</Text>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 13.3,
     textAlign: "center",
     color: "#666666",
-    marginBottom: 25,
+    marginBottom: 20,
   },
   calendarContainer: {
     paddingHorizontal: 20,

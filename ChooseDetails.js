@@ -6,9 +6,12 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const backIcon = require('./assets/back.png');
 
@@ -37,17 +40,18 @@ const ChooseDetails = ({ navigation, route }) => {
           style={styles.navButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.navButtonText}>취소</Text>
+          <Text style={styles.navButtonbackText}>취소</Text>
         </TouchableOpacity>
         <Text style={styles.navTitle}>
           {selectedMonth}월 {selectedDay}일의 일기
         </Text>
         <TouchableOpacity style={styles.navButton}>
-          <Text style={styles.navButtonText}>생성하기</Text>
+          <Text style={styles.navButtonnextText} onPress={() => navigation.navigate("MainPage")}>생성</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.subtitle}>세부 정보를 선택해주세요.</Text>
       <View style={styles.selectionContainer}>
+
         <Text style={styles.selectionTitle}>성별</Text>
         <View style={styles.selectionRow}>
           <TouchableOpacity
@@ -83,6 +87,7 @@ const ChooseDetails = ({ navigation, route }) => {
             </Text>
           </TouchableOpacity>
         </View>
+
         <Text style={styles.selectionTitle}>머리 스타일</Text>
         <View style={styles.selectionRow}>
           <TouchableOpacity
@@ -117,6 +122,7 @@ const ChooseDetails = ({ navigation, route }) => {
               # 단발
             </Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[
               styles.selectionButton,
@@ -166,20 +172,18 @@ const ChooseDetails = ({ navigation, route }) => {
           </View>
         ))}
       </ScrollView>
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           value={inputText}
           onChangeText={setInputText}
-          placeholder="메시지를 입력하세요"
+          placeholder="작성을 간단하게 입력해주시면 좋아요."
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Icon name="send" size={20} color="#FFF" />
         </TouchableOpacity>
       </View>
-      <Text style={styles.footerText}>
-        작성을 간단하게 입력해주시면 좋아요.
-      </Text>
     </SafeAreaView>
   );
 };
@@ -202,41 +206,51 @@ const styles = StyleSheet.create({
   navigation: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 20,
+    paddingHorizontal: 20,
     alignItems: "center",
+    marginTop: 10,
   },
   navButton: {
     padding: 10,
   },
-  navButtonText: {
-    fontSize: 16,
-    color: "#4A90E2",
+  navButtonbackText: {
+    fontSize: 13,
+    color: "#B8CBF0",
+  },
+  navButtonnextText: {
+    fontSize: 13,
+    color: "#6C99F0",
   },
   navTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
+    color: "#22215B",
   },
   subtitle: {
+    fontSize: 13.3,
     textAlign: "center",
     color: "#666666",
-    marginBottom: 20,
+    marginBottom: 25,
+    marginTop: 5,
   },
   selectionContainer: {
     paddingHorizontal: 20,
   },
   selectionTitle: {
-    fontSize: 16,
+    fontSize: 13.3,
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 10,
+    color: "#CFCFCF",
   },
   selectionRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around",
+    justifyContent: "center",
     marginBottom: 10,
   },
   selectionButton: {
+    width: 100,
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     paddingVertical: 10,
@@ -247,12 +261,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   selectedButton: {
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#6C99F0",
   },
   selectionButtonText: {
     color: "#666666",
+    marginBottom: 3,
   },
   selectedButtonText: {
     color: "#FFFFFF",
