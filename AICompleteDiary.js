@@ -9,9 +9,35 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
+import { requestApi } from "./utils/apiSetting";
+import { useSelector } from "react-redux";
 
 const AICompleteDiary = ({ navigation, route }) => {
-  const { gptResult } = route.params; // Access the passed date parameter
+  const { gptResult, selectedMonth, selectedDay, selectedDate } = route.params; // Access the passed date parameter
+  const reduxUserInfo = useSelector((state) => state.userInfo);
+
+  const handleDiary = () => {
+    requestApi
+      .post(
+        "/diaries",
+        {
+          title: "명상의 힘: 마음을 가라앉히고 내면 평화 찾기",
+          content: gptResult,
+          diaryDate: selectedDate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${reduxUserInfo.accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        navigation.navigate("MainPage");
+      })
+      .catch((err) => {
+        console.log(err, "hi");
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -22,7 +48,9 @@ const AICompleteDiary = ({ navigation, route }) => {
         <Text style={styles.backButtonText}>{"<"}</Text>
       </TouchableOpacity>
       <View style={styles.content}>
-        <Text style={styles.dateText}>2024년 08월 06일</Text>
+        <Text style={styles.dateText}>
+          {selectedMonth}월 {selectedDay}일
+        </Text>
         <Image
           source={require("./assets/img/completeMakeAiDiary.png")}
           style={styles.image}
@@ -35,7 +63,9 @@ const AICompleteDiary = ({ navigation, route }) => {
         </ScrollView>
         <TouchableOpacity
           style={styles.homeButton}
-          onPress={() => navigation.navigate("MainPage")}
+          onPress={() => {
+            handleDiary();
+          }}
         >
           <Text style={styles.homeButtonText}>홈으로</Text>
         </TouchableOpacity>

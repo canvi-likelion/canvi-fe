@@ -9,7 +9,9 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const AIHelpDiary = ({ navigation }) => {
+const AIHelpDiary = ({ navigation, route }) => {
+  const { selectedMonth, selectedDay, selectedDate } = route.params;
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -51,7 +53,13 @@ const AIHelpDiary = ({ navigation }) => {
               </View>
               <TouchableOpacity
                 style={styles.chooseButton}
-                onPress={() => navigation.navigate("AIWriteDiary")}
+                onPress={() =>
+                  navigation.navigate("AIWriteDiary", {
+                    selectedMonth: selectedMonth,
+                    selectedDay: selectedDay,
+                    selectedDate: selectedDate,
+                  })
+                }
               >
                 <Text style={styles.chooseButtonText}>작성하기</Text>
               </TouchableOpacity>
