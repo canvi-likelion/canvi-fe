@@ -13,6 +13,8 @@ import { requestApi } from "./utils/apiSetting";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 
+const backIcon = require("./assets/back.png");
+
 const AIWriteDiary = ({ navigation, route }) => {
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -46,45 +48,30 @@ const AIWriteDiary = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
-        style={styles.backButton}
+        style={styles.backContainer}
         onPress={() => navigation.goBack()}
       >
-        <Text style={styles.backButtonText}>{"<"}</Text>
+        <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
-      <Text style={styles.mainTitle}>도와드릴게요.</Text>
-      <Text style={styles.subtitle}>같이 작성해보아요.</Text>
-      <View style={styles.chatContainer}>
-        <View style={styles.speechBubbleGray}>
-          <Text style={styles.bubbleTextBold}>New feature!</Text>
-          <Text style={styles.bubbleText}>
-            This is a handy template you can use for your apps (as an onboarding
-            tip feature for instance). Feel free to resize it, change colors,
-            and modify the arrow position.
-          </Text>
-        </View>
-        <View style={styles.speechBubbleBlue}>
-          <Text style={styles.bubbleTextBold}>New feature!</Text>
-          <Text style={styles.bubbleText}>
-            This is a handy template you can use for your apps (as an onboarding
-            tip feature for instance). Feel free to resize it, change colors,
-            and modify the arrow position.
-          </Text>
-        </View>
-        <View style={styles.speechBubbleGray}>
-          <Text style={styles.bubbleTextBold}>New feature!</Text>
-          <Text style={styles.bubbleText}>
-            This is a handy template you can use for your apps (as an onboarding
-            tip feature for instance).
-          </Text>
-        </View>
+
+      <View style={styles.navigation}>
+        <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+          <Text style={styles.navButtonbackText}>취소</Text>
+        </TouchableOpacity>
+        <Text style={styles.navTitle}>도와드릴게요.</Text>
       </View>
-      {/* <TouchableOpacity
-        style={styles.createButton}
-        onPress={() => navigation.navigate("AICompleteDiary")}
-      > */}
+
+      <Text style={styles.subtitle}>
+        같이 작성해보아요.
+      </Text>
+
+      <View style={styles.chatContainer}>
+      </View>
       {isLoading && (
         <ActivityIndicator size="small" color="#6C99F0" style={styles.loader} />
       )}
+
+      <View style={styles.buttoncontainer}>
       <TouchableOpacity
         style={styles.createButton}
         onPress={() => {
@@ -94,10 +81,12 @@ const AIWriteDiary = ({ navigation, route }) => {
       >
         <Text style={styles.createButtonText}>생성하기</Text>
       </TouchableOpacity>
+      </View>
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
-          placeholder="Enter your prompt"
+          placeholder="tex.."
           value={prompt}
           onChangeText={setPrompt}
         />
@@ -110,26 +99,41 @@ const AIWriteDiary = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  backContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 10,
+    marginVertical: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",
+  },
+  navigation: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
+    alignItems: "center",
+    width: 265,
   },
-  backButton: {
-    marginTop: 10,
+  navButton: {
+    padding: 10,
   },
-  backButtonText: {
-    fontSize: 24,
-    color: "#000",
+  navButtonbackText: {
+    fontSize: 13,
+    color: "#B8CBF0",
   },
-  mainTitle: {
-    fontSize: 24,
+  navTitle: {
+    fontSize: 22,
     fontWeight: "bold",
-    textAlign: "center",
-    marginVertical: 10,
+    color: "#22215B",
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 13.3,
     textAlign: "center",
     color: "#666666",
     marginBottom: 20,
@@ -137,6 +141,7 @@ const styles = StyleSheet.create({
   chatContainer: {
     flex: 1,
     justifyContent: "flex-start",
+    margin: 20,
   },
   speechBubbleGray: {
     backgroundColor: "#C4C4C4",
@@ -159,21 +164,26 @@ const styles = StyleSheet.create({
   bubbleText: {
     color: "#FFFFFF",
   },
+  buttoncontainer: {
+    alignItems: "center",
+  },
   createButton: {
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#FFF",
     paddingVertical: 10,
     borderRadius: 25,
     alignItems: "center",
     marginVertical: 10,
+    width: 120,
   },
   createButtonText: {
-    color: "#FFFFFF",
+    color: "#6C99F0",
     fontSize: 16,
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 10,
+    marginHorizontal: 20,
   },
   textInput: {
     flex: 1,
@@ -185,7 +195,7 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     marginLeft: 10,
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#6C99F0",
     borderRadius: 20,
     padding: 10,
   },

@@ -13,17 +13,16 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { Calendar } from "react-native-calendars";
 import { createStackNavigator } from "@react-navigation/stack";
-import { requestApi } from "./utils/apiSetting";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-const icon = require("./assets/icon.png");
-const checkicon = require("./assets/checkicon.png");
+const icon = require('./assets/icon.png');
+const checkicon = require('./assets/checkicon.png');
 const Stack = createStackNavigator();
 
-const ex1 = require("./assets/ex/ex1.png");
-const ex2 = require("./assets/ex/ex2.png");
-const ex3 = require("./assets/ex/ex3.png");
+const ex1 = require('./assets/ex/ex1.png');
+const ex2 = require('./assets/ex/ex2.png');
+const ex3 = require('./assets/ex/ex3.png');
 
 const MainPage = ({ navigation }) => {
   const reduxUserInfo = useSelector((state) => state.userInfo);
@@ -36,8 +35,8 @@ const MainPage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topheader}>
-        <Image source={icon} style={styles.icon} />
-        <Image source={checkicon} style={styles.checkicon} />
+        <Image source={icon} style={styles.icon}/>
+        <Image source={checkicon} style={styles.checkicon}/>
       </View>
       <View style={styles.scrollContainer}>
         {selectedTab === "홈" && (
@@ -49,12 +48,9 @@ const MainPage = ({ navigation }) => {
                   style={styles.profileImage}
                 />
                 <View style={styles.textbox}>
-                  <Text style={styles.headerText}>
-                    {reduxUserInfo.userName}님,
-                  </Text>
+                  <Text style={styles.headerText}>{reduxUserInfo.userName}님,</Text>
                   <Text style={styles.subHeaderText}>
-                    오늘의 하루도 기록해볼까요?
-                  </Text>
+                  오늘의 하루도 기록해볼까요?</Text>
                 </View>
               </View>
               <TouchableOpacity
@@ -64,7 +60,7 @@ const MainPage = ({ navigation }) => {
                 <Text style={styles.startButtonText}>Let's Start</Text>
               </TouchableOpacity>
             </View>
-
+            
             <ScrollView
               horizontal
               pagingEnabled
@@ -75,16 +71,16 @@ const MainPage = ({ navigation }) => {
               decelerationRate="fast"
             >
               <View style={styles.blogCard}>
-                <Image source={ex1} style={styles.blogImage} />
+                <Image
+                  source={ex1}
+                  style={styles.blogImage}
+                />
                 <Text style={styles.blogTitle}>
                   엊그제 {reduxUserInfo.userName}님은?
                 </Text>
                 <Text style={styles.blogDate}>월요일 8월 5일, 2024</Text>
                 <Text style={styles.blogContent}>
-                  엊그제 {reduxUserInfo.userName}님은 도심 속 숨겨진 공원을
-                  발견했습니다.{"\n"}낯선 길에서 마주친 멋진 풍경과 새 친구를
-                  사귀었어요.{"\n"}저녁에는 저녁 노을을 보며 하루의 피로를
-                  날렸습니다.
+                  엊그제 {reduxUserInfo.userName}님은 도심 속 숨겨진 공원을 발견했습니다.{"\n"}낯선 길에서 마주친 멋진 풍경과 새 친구를 사귀었어요.{"\n"}저녁에는 저녁 노을을 보며 하루의 피로를 날렸습니다.
                 </Text>
                 <View style={styles.readcontainer}>
                   <Text style={styles.readcontainertext}>
@@ -97,16 +93,16 @@ const MainPage = ({ navigation }) => {
               </View>
 
               <View style={styles.blogCard}>
-                <Image source={ex2} style={styles.blogImage} />
+                <Image
+                  source={ex2}
+                  style={styles.blogImage}
+                />
                 <Text style={styles.blogTitle}>
                   어제의 {reduxUserInfo.userName}님은?
                 </Text>
                 <Text style={styles.blogDate}>화요일 8월 6일, 2024</Text>
                 <Text style={styles.blogContent}>
-                  어제의 {reduxUserInfo.userName}님은 바쁜 일상 속에서도 소소한
-                  행복을 찾았습니다.{"\n"}평소와 다른 길로 돌아가는 산책에서
-                  새로운 영감을 얻었어요.{"\n"}마지막엔 좋아하는 카페에서 달콤한
-                  디저트로 하루를 완성했습니다.
+                  어제의 {reduxUserInfo.userName}님은 바쁜 일상 속에서도 소소한 행복을 찾았습니다.{"\n"}평소와 다른 길로 돌아가는 산책에서 새로운 영감을 얻었어요.{"\n"}마지막엔 좋아하는 카페에서 달콤한 디저트로 하루를 완성했습니다.
                 </Text>
                 <View style={styles.readcontainer}>
                   <Text style={styles.readcontainertext}>
@@ -119,16 +115,16 @@ const MainPage = ({ navigation }) => {
               </View>
 
               <View style={styles.blogCard}>
-                <Image source={ex3} style={styles.blogImage} />
+                <Image
+                  source={ex3}
+                  style={styles.blogImage}
+                />
                 <Text style={styles.blogTitle}>
                   사흘 전 {reduxUserInfo.userName}님은?
                 </Text>
                 <Text style={styles.blogDate}>일요일 8월 4일, 2024</Text>
                 <Text style={styles.blogContent}>
-                  사흘 전 {reduxUserInfo.userName}님은 새로운 카페를
-                  탐방했습니다.{"\n"}이국적인 분위기와 독특한 메뉴를 즐겼어요.
-                  {"\n"}저녁에는 친구들과 함께 새로운 맛집을 찾아가 대화를
-                  나눴습니다.
+                  사흘 전 {reduxUserInfo.userName}님은 새로운 카페를 탐방했습니다.{"\n"}이국적인 분위기와 독특한 메뉴를 즐겼어요.{"\n"}저녁에는 친구들과 함께 새로운 맛집을 찾아가 대화를 나눴습니다.
                 </Text>
                 <View style={styles.readcontainer}>
                   <Text style={styles.readcontainertext}>
@@ -163,42 +159,6 @@ const MainPage = ({ navigation }) => {
               <Calendar
                 monthFormat={"M월"}
                 style={styles.calendar}
-                onDayPress={(day) => {
-                  requestApi
-                    .get("/diaries", {
-                      headers: {
-                        Authorization: `Bearer ${reduxUserInfo.accessToken}`,
-                      },
-                    })
-                    .then((res) => {
-                      const diaryList = res.data.result.diaryGetResponseList;
-                      const targetDate = day.dateString;
-
-                      const findDiaryByDate = (diaryList, targetDate) => {
-                        for (let i = 0; i < diaryList.length; i++) {
-                          if (diaryList[i].date == targetDate) {
-                            return diaryList[i];
-                          }
-                        }
-                        return null; // 일치하는 항목이 없는 경우
-                      };
-
-                      const matchingDiary = findDiaryByDate(
-                        diaryList,
-                        targetDate
-                      );
-                      navigation.navigate("ShowDiary", {
-                        title: matchingDiary.title,
-                        content: matchingDiary.content,
-                        selectedMonth: day.month,
-                        selectedDay: day.day,
-                        selectedDate: day.dateString,
-                      });
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                }}
                 theme={{
                   arrowColor: "#4A90E2",
                   todayTextColor: "#4A90E2",
@@ -345,9 +305,9 @@ const MainPage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   topheader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 20,
   },
   icon: {
@@ -366,7 +326,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   userinform: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 15,
   },
   header: {
@@ -389,7 +349,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   textbox: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   headerText: {
     color: "#22215B",
@@ -407,9 +367,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 15,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   startButtonText: {
     color: "#FFFFFF",
@@ -420,7 +380,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   blogScrollContent: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingHorizontal: 10,
   },
   blogCard: {
@@ -456,9 +416,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   readcontainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   readcontainertext: {
     fontSize: 8.96,
@@ -571,12 +531,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     paddingVertical: 10,
-    marginTop: "auto",
   },
   myPageFooterText: {
-    fontSize: 14,
+    fontSize: 12,
     color: "#666666",
     marginHorizontal: 10,
+    marginTop: 110,
   },
   footer: {
     flexDirection: "row",
@@ -588,7 +548,7 @@ const styles = StyleSheet.create({
     borderRadius: 70,
     marginHorizontal: 20,
     marginVertical: 10,
-    shadowColor: "#000",
+    shadowColor: "#000", 
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
