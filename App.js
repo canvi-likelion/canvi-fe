@@ -166,16 +166,23 @@ export default function App() {
             <Stack.Screen
               name="ChangePasswordStep1"
               component={ChangePasswordStep1}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ChangePasswordStep2"
               component={ChangePasswordStep2}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="ChangePasswordStep3"
               component={ChangePasswordStep3}
+              options={{ headerShown: false }}
             />
-            <Stack.Screen name="ShowDiary" component={ShowDiary} />
+            <Stack.Screen 
+              name="ShowDiary" 
+              component={ShowDiary} 
+              options={{ headerShown: false }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

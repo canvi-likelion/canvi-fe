@@ -12,6 +12,8 @@ import { useState, useEffect } from "react";
 import { requestApi } from "./utils/apiSetting";
 import { useSelector } from "react-redux";
 
+const backIcon = require("./assets/back.png");
+
 const AICompleteDiary = ({ navigation, route }) => {
   const { gptResult, selectedMonth, selectedDay, selectedDate } = route.params; // Access the passed date parameter
   const reduxUserInfo = useSelector((state) => state.userInfo);
@@ -42,11 +44,12 @@ const AICompleteDiary = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
-        style={styles.backButton}
+        style={styles.backContainer}
         onPress={() => navigation.goBack()}
       >
-        <Text style={styles.backButtonText}>{"<"}</Text>
+        <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
+
       <View style={styles.content}>
         <Text style={styles.dateText}>
           {selectedMonth}월 {selectedDay}일
@@ -58,7 +61,7 @@ const AICompleteDiary = ({ navigation, route }) => {
         <Text style={styles.title}>
           명상의 힘: 마음을 가라앉히고 내면 평화 찾기
         </Text>
-        <ScrollView>
+        <ScrollView style={styles.scrollview}>
           <Text style={styles.description}>{gptResult}</Text>
         </ScrollView>
         <TouchableOpacity
@@ -75,6 +78,20 @@ const AICompleteDiary = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollview: {
+    height: 250,
+    margin: 15,
+  },
+  backContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 10,
+    marginVertical: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",
@@ -90,13 +107,13 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: "center",
-    paddingHorizontal: 20,
-    marginTop: 60,
+    paddingHorizontal: 10,
   },
   dateText: {
-    fontSize: 16,
-    color: "#4A90E2",
-    marginBottom: 20,
+    fontSize: 19.2,
+    color: "#666666",
+    marginBottom: 10,
+    fontWeight: "bold",
   },
   image: {
     width: 200,
@@ -104,10 +121,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 10,
+    color: "#22215B",
   },
   description: {
     textAlign: "center",
@@ -115,13 +132,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   homeButton: {
-    backgroundColor: "#4A90E2",
+    backgroundColor: "#6C99F0",
     padding: 15,
-    borderRadius: 25,
+    borderRadius: 30,
+    width: "60%",
   },
   homeButtonText: {
     color: "#FFF",
     fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 3,
+    textAlign: "center",
   },
 });
 

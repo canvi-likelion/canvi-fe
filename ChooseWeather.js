@@ -41,7 +41,7 @@ const ChooseWeather = ({ navigation, route }) => {
             navigation.navigate("ChooseDetails", {
               selectedDay: selectedDay,
               selectedMonth: selectedMonth,
-              selectedWeather: selectedWeather, // Pass the selected weather
+              selectedWeather: selectedWeather,
             })
           }
         >

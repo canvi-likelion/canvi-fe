@@ -5,9 +5,12 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector, useDispatch } from "react-redux";
+
+const backIcon = require("./assets/back2.png");
 
 const EditName = ({ navigation }) => {
   const reduxUserInfo = useSelector((state) => state.userInfo);
@@ -22,12 +25,14 @@ const EditName = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.backButton}
+        style={styles.backContainer}
         onPress={() => navigation.goBack()}
       >
-        <Icon name="arrow-back" size={25} color="#000" />
+        <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
+
       <Text style={styles.headerText}>내 정보</Text>
+      
       <View style={styles.editItem}>
         <Text style={styles.infoTitle}>이름</Text>
         <TextInput
@@ -39,6 +44,7 @@ const EditName = ({ navigation }) => {
           <Icon name="close-circle-outline" size={20} color="#A8A8A8" />
         </TouchableOpacity>
       </View>
+      
       <TouchableOpacity style={styles.saveButton} onPress={handleNameChange}>
         <Text style={styles.saveButtonText}>변경하기</Text>
       </TouchableOpacity>
@@ -47,6 +53,15 @@ const EditName = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  backContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",
@@ -56,10 +71,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
+    color: "#666666",
   },
   editItem: {
     flexDirection: "row",
@@ -70,11 +86,12 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
   },
   infoTitle: {
-    fontSize: 16,
-    color: "#4A90E2",
+    fontSize: 13,
+    fontWeight: "bold",
+    color: "#22215B",
+    margin: 10,
   },
   infoContent: {
-    flex: 1,
     fontSize: 16,
     color: "#666666",
     borderBottomWidth: 1,
@@ -82,16 +99,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   saveButton: {
-    backgroundColor: "#4A90E2",
-    paddingVertical: 10,
+    backgroundColor: "#6C99F0",
+    paddingVertical: 15,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 30,
     alignItems: "center",
     marginTop: 20,
   },
   saveButtonText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: "bold",
   },
 });
 

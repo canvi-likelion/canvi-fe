@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
 
 const backIcon = require("./assets/back.png");
 
-const ChooseDate = ({ navigation, route }) => {
-  console.log(route);
+const ChooseDate = ({ navigation }) => {
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleNext = () => {
+    if (selectedDate) {
+      navigation.navigate("WriteDiary", {
+        selectedMonth: selectedDate.month,
+        selectedDay: selectedDate.day,
+        selectedDate: selectedDate.dateString,
+      });
+    } else {
+      alert("날짜를 선택해주세요.");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -18,10 +31,10 @@ const ChooseDate = ({ navigation, route }) => {
 
       <View style={styles.navigation}>
         <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
-        <Text style={styles.navButtonbackText}>취소</Text>
+          <Text style={styles.navButtonbackText}>취소</Text>
         </TouchableOpacity>
         <Text style={styles.navTitle}>오늘의 일기</Text>
-        <TouchableOpacity style={styles.navButton}>
+        <TouchableOpacity style={styles.navButton} onPress={handleNext}>
           <Text style={styles.navButtonnextText}>다음</Text>
         </TouchableOpacity>
       </View>
@@ -30,15 +43,21 @@ const ChooseDate = ({ navigation, route }) => {
       <View style={styles.calendarContainer}>
         <Calendar
           current={"2024-08-01"}
-          monthFormat={"yyyy M월"}
+          monthFormat={"M월"}
           onDayPress={(day) => {
-            console.log("selected day", day);
-            navigation.navigate("WriteDiary", {
-              selectedMonth: day.month,
-              selectedDay: day.day,
-              selectedDate: day.dateString,
-            });
+            setSelectedDate(day);
           }}
+          markedDates={
+            selectedDate
+              ? {
+                  [selectedDate.dateString]: {
+                    selected: true,
+                    marked: true,
+                    selectedColor: "#6C99F0"
+                  },
+                }
+              : {}
+          }
           theme={{
             arrowColor: "#4A90E2",
             todayTextColor: "#4A90E2",
