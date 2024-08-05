@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,14 +8,42 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useApi } from "../../hooks/useApi";
 import backIcon from "../../assets/back.png";
-import completeMakeAiDiaryImage from "../../assets/img/completeMakeAiDiary.png";
 
 const ShowDiary = ({ navigation, route }) => {
-  const { selectedMonth, selectedDay, title, content } = route.params; // Access the passed date parameter
-  const handleDiary = () => {
+  const { selectedDate } = route.params;
+  const [diaryData, setDiaryData] = useState({
+    title: "",
+    content: "",
+    comment: "",
+    imageUrl: "",
+  });
+  const { getDiary } = useApi();
+
+  useEffect(() => {
+    const fetchDiaryData = async () => {
+      try {
+        const data = await getDiary(selectedDate);
+        setDiaryData(data);
+      } catch (error) {
+        console.error("Error fetching diary data:", error);
+        // 에러 처리 로직 추가 (예: 사용자에게 알림)
+      }
+    };
+
+    fetchDiaryData();
+  }, [selectedDate]);
+
+  const handleGoHome = () => {
     navigation.navigate("MainPage");
   };
+
+  if (!diaryData) {
+    return <Text>Loading...</Text>; // 또는 로딩 스피너 컴포넌트
+  }
+
+  const [month, day] = selectedDate.split("-").slice(1); // "YYYY-MM-DD" 형식 가정
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,19 +56,18 @@ const ShowDiary = ({ navigation, route }) => {
 
       <View style={styles.content}>
         <Text style={styles.dateText}>
-          {selectedMonth}월 {selectedDay}일
+          {month}월 {day}일
         </Text>
-        <Image source={completeMakeAiDiaryImage} style={styles.image} />
-        <Text style={styles.title}>{title}</Text>
+        <Image source={{ uri: diaryData.imageUrl }} style={styles.image} />
+        <Text style={styles.title}>{diaryData.title}</Text>
         <ScrollView style={styles.scrollview}>
-          <Text style={styles.description}>{content}</Text>
+          <Text style={styles.description}>{diaryData.content}</Text>
+          <View style={styles.commentContainer}>
+            <Text style={styles.commentTitle}>AI 코멘트:</Text>
+            <Text style={styles.commentText}>{diaryData.comment}</Text>
+          </View>
         </ScrollView>
-        <TouchableOpacity
-          style={styles.homeButton}
-          onPress={() => {
-            handleDiary();
-          }}
-        >
+        <TouchableOpacity style={styles.homeButton} onPress={handleGoHome}>
           <Text style={styles.homeButtonText}>홈으로</Text>
         </TouchableOpacity>
       </View>
@@ -114,6 +141,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 3,
     textAlign: "center",
+  },
+  commentContainer: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+  },
+  commentTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  commentText: {
+    fontSize: 14,
+    color: "#333",
   },
 });
 

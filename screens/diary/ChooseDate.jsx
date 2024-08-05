@@ -198,6 +198,10 @@ const styles = StyleSheet.create({
   navButtonnextText: {
     fontSize: 13,
   },
+  navButtonbackText: {
+    fontSize: 13,
+    color: "#B8CBF0",
+  },
   activeText: {
     color: "#6C99F0",
   },
