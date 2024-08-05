@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-const backIcon = require("../../assets/back.png");
+import backIcon from "../../assets/back.png";
 
 const ChooseWeather = ({ navigation, route }) => {
   const { selectedDay, selectedMonth, selectedDate, title, content } =
-    route.params; // Access the passed date parameter
+    route.params;
   const [selectedWeather, setSelectedWeather] = useState(null);
+
+  const isNextDisabled = useMemo(() => !selectedWeather, [selectedWeather]);
 
   const weatherIcons = [
     "weather-sunny",
@@ -19,6 +20,19 @@ const ChooseWeather = ({ navigation, route }) => {
     "weather-snowy",
     "weather-fog",
   ];
+
+  const handleNext = () => {
+    if (!isNextDisabled) {
+      navigation.navigate("ChooseDetails", {
+        selectedDay,
+        selectedMonth,
+        selectedWeather,
+        selectedDate,
+        title,
+        content,
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,21 +55,20 @@ const ChooseWeather = ({ navigation, route }) => {
         </Text>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() =>
-            navigation.navigate("ChooseDetails", {
-              selectedDay: selectedDay,
-              selectedMonth: selectedMonth,
-              selectedWeather: selectedWeather,
-              selectedDate: selectedDate,
-              title: title,
-              content: content,
-            })
-          }
+          onPress={handleNext}
+          disabled={isNextDisabled}
         >
-          <Text style={styles.navButtonnextText}>다음</Text>
+          <Text
+            style={[
+              styles.navButtonnextText,
+              isNextDisabled ? styles.disabledText : styles.activeText,
+            ]}
+          >
+            다음
+          </Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.subtitle}>그 날의 날씨는 어땠나요?</Text>
+      <Text style={styles.subtitle}>날씨는 어땠나요?</Text>
       <View style={styles.weatherContainer}>
         {weatherIcons.map((iconName, index) => (
           <TouchableOpacity
@@ -111,7 +124,12 @@ const styles = StyleSheet.create({
   },
   navButtonnextText: {
     fontSize: 13,
+  },
+  activeText: {
     color: "#6C99F0",
+  },
+  disabledText: {
+    color: "#B8CBF0",
   },
   navTitle: {
     fontSize: 22,
