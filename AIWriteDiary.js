@@ -19,7 +19,7 @@ const AIWriteDiary = ({ navigation, route }) => {
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const reduxUserInfo = useSelector((state) => state.userInfo);
-  const { selectedMonth, selectedDay, selectedDate } = route.params;
+  const { selectedMonth, selectedDay, selectedDate, subject } = route.params;
 
   const handleGenerateText = () => {
     setIsLoading(true);
@@ -35,6 +35,7 @@ const AIWriteDiary = ({ navigation, route }) => {
           selectedMonth: selectedMonth,
           selectedDay: selectedDay,
           selectedDate: selectedDate,
+          subject: subject,
         });
       })
       .catch((err) => {
@@ -55,32 +56,32 @@ const AIWriteDiary = ({ navigation, route }) => {
       </TouchableOpacity>
 
       <View style={styles.navigation}>
-        <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backContainer}
+          onPress={() => navigation.goBack()}
+        >
           <Text style={styles.navButtonbackText}>취소</Text>
         </TouchableOpacity>
         <Text style={styles.navTitle}>도와드릴게요.</Text>
       </View>
 
-      <Text style={styles.subtitle}>
-        같이 작성해보아요.
-      </Text>
+      <Text style={styles.subtitle}>같이 작성해보아요.</Text>
 
-      <View style={styles.chatContainer}>
-      </View>
+      <View style={styles.chatContainer}></View>
       {isLoading && (
         <ActivityIndicator size="small" color="#6C99F0" style={styles.loader} />
       )}
 
       <View style={styles.buttoncontainer}>
-      <TouchableOpacity
-        style={styles.createButton}
-        onPress={() => {
-          handleGenerateText();
-        }}
-        disabled={isLoading}
-      >
-        <Text style={styles.createButtonText}>생성하기</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={() => {
+            handleGenerateText();
+          }}
+          disabled={isLoading}
+        >
+          <Text style={styles.createButtonText}>생성하기</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.inputContainer}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,9 @@ const backIcon = require("./assets/back.png");
 
 const WriteDiary = ({ navigation, route }) => {
   const { selectedMonth, selectedDay, selectedDate } = route.params;
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -42,6 +45,8 @@ const WriteDiary = ({ navigation, route }) => {
               selectedDay: selectedDay,
               selectedMonth: selectedMonth,
               selectedDate: selectedDate,
+              title: title,
+              content: content,
             })
           }
         >
@@ -51,20 +56,27 @@ const WriteDiary = ({ navigation, route }) => {
 
       <Text style={styles.subtitle}>기록하고 싶었던 내용을 적어주세요.</Text>
       <View style={styles.content}>
-        <TextInput style={styles.titleInput} placeholder="제목" />
+        <TextInput
+          style={styles.titleInput}
+          placeholder="제목"
+          value={title}
+          onChangeText={setTitle}
+        />
         <TextInput
           style={styles.contentInput}
           placeholder="기록하고 싶은 내용"
+          value={content}
+          onChangeText={setContent}
           multiline
         />
       </View>
       <View style={styles.tooltipContainer}>
         <View style={styles.tooltip}>
-          <Text style={styles.tooltipText}>
-            어떻게 작성할 지 막막하신가요?
+          <Text style={styles.tooltipText}>어떻게 작성할 지 막막하신가요?</Text>
+          <Text style={styles.tooltipsubtest}>
+            This is a handy template you can use for your apps (as an onboarding
+            tip feature).
           </Text>
-          <Text style={styles.tooltipsubtest}>This is a handy template you can use
-          for your apps (as an onboarding tip feature).</Text>
         </View>
         <TouchableOpacity
           style={styles.tooltipButton}
@@ -156,7 +168,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     padding: 20,
   },
   tooltip: {
@@ -194,8 +206,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   tooltipButtonText: {
     fontSize: 20,
