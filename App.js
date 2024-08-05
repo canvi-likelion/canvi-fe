@@ -5,7 +5,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store/store";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import StartScreen from "./screens/startScreen";
+import StartScreen from "./screens/StartScreen";
 import LoginScreen from "./screens/auth/login/LoginScreen";
 import SignUpScreen from "./screens/auth/signup/SignupScreen";
 import SignupScreenEmail from "./screens/auth/signup/SignupScreenEmail";
