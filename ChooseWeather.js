@@ -20,6 +20,21 @@ const ChooseWeather = ({ navigation, route }) => {
     "weather-fog",
   ];
 
+  const handleNext = () => {
+    if (selectedWeather) {
+      navigation.navigate("ChooseDetails", {
+        selectedDay: selectedDay,
+        selectedMonth: selectedMonth,
+        selectedWeather: selectedWeather,
+        selectedDate: selectedDate,
+        title: title,
+        content: content,
+      });
+    } else {
+      alert("날씨를 선택해주세요.");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -41,16 +56,7 @@ const ChooseWeather = ({ navigation, route }) => {
         </Text>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() =>
-            navigation.navigate("ChooseDetails", {
-              selectedDay: selectedDay,
-              selectedMonth: selectedMonth,
-              selectedWeather: selectedWeather,
-              selectedDate: selectedDate,
-              title: title,
-              content: content,
-            })
-          }
+          onPress={handleNext}
         >
           <Text style={styles.navButtonnextText}>다음</Text>
         </TouchableOpacity>
