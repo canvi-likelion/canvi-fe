@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -9,12 +9,37 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const backIcon = require("../../assets/back.png");
+import backIcon from "../../assets/back.png";
 
 const WriteDiary = ({ navigation, route }) => {
   const { selectedMonth, selectedDay, selectedDate } = route.params;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
+  const isNextDisabled = useMemo(
+    () => !title.trim() || !content.trim(),
+    [title, content]
+  );
+
+  const handleNext = () => {
+    if (!isNextDisabled) {
+      navigation.navigate("ChooseWeather", {
+        selectedDay,
+        selectedMonth,
+        selectedDate,
+        title,
+        content,
+      });
+    }
+  };
+
+  const handleAIAssist = () => {
+    navigation.navigate("MakeDiaryAI", {
+      selectedMonth,
+      selectedDay,
+      selectedDate,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,10 +53,7 @@ const WriteDiary = ({ navigation, route }) => {
       <View style={styles.navigation}>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => {
-            console.log(selectedDay);
-            navigation.goBack();
-          }}
+          onPress={() => navigation.goBack()}
         >
           <Text style={styles.navButtonbackText}>취소</Text>
         </TouchableOpacity>
@@ -40,17 +62,17 @@ const WriteDiary = ({ navigation, route }) => {
         </Text>
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() =>
-            navigation.navigate("ChooseWeather", {
-              selectedDay: selectedDay,
-              selectedMonth: selectedMonth,
-              selectedDate: selectedDate,
-              title: title,
-              content: content,
-            })
-          }
+          onPress={handleNext}
+          disabled={isNextDisabled}
         >
-          <Text style={styles.navButtonnextText}>다음</Text>
+          <Text
+            style={[
+              styles.navButtonnextText,
+              isNextDisabled ? styles.disabledText : styles.activeText,
+            ]}
+          >
+            다음
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -78,16 +100,7 @@ const WriteDiary = ({ navigation, route }) => {
             tip feature).
           </Text>
         </View>
-        <TouchableOpacity
-          style={styles.tooltipButton}
-          onPress={() =>
-            navigation.navigate("MakeDiaryAI", {
-              selectedMonth: selectedMonth,
-              selectedDay: selectedDay,
-              selectedDate: selectedDate,
-            })
-          }
-        >
+        <TouchableOpacity style={styles.tooltipButton} onPress={handleAIAssist}>
           <Text style={styles.tooltipButtonText}>✎</Text>
         </TouchableOpacity>
       </View>
@@ -125,7 +138,6 @@ const styles = StyleSheet.create({
   },
   navButtonnextText: {
     fontSize: 13,
-    color: "#6C99F0",
   },
   navTitle: {
     color: "#22215B",
@@ -213,6 +225,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#4A90E2",
     marginBottom: 5,
+  },
+  activeText: {
+    color: "#6C99F0",
+  },
+  disabledText: {
+    color: "#B8CBF0",
   },
 });
 
