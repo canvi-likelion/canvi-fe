@@ -1,22 +1,65 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
+import { useSelector } from "react-redux";
+import { requestApi } from "./utils/apiSetting";
+import Modal from "react-native-modal";
 
 const backIcon = require("./assets/back.png");
 
 const ChooseDate = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+  const [markedDates, setMarkedDates] = useState({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isNoDateSelectedModalVisible, setIsNoDateSelectedModalVisible] = useState(false);
+  const reduxUserInfo = useSelector((state) => state.userInfo);
+  const today = new Date().toISOString().split("T")[0];
+
+  useEffect(() => {
+    requestApi
+      .get("/diaries", {
+        headers: {
+          Authorization: `Bearer ${reduxUserInfo.accessToken}`,
+        },
+      })
+      .then((res) => {
+        const diaryList = res.data.result.diaryGetResponseList;
+        const markedDatesTemp = {};
+
+        diaryList.forEach((diary) => {
+          markedDatesTemp[diary.date] = {
+            marked: true,
+            dotColor: "#6C99F0",
+          };
+        });
+
+        setMarkedDates(markedDatesTemp);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [reduxUserInfo.accessToken]);
 
   const handleNext = () => {
     if (selectedDate) {
-      navigation.navigate("WriteDiary", {
-        selectedMonth: selectedDate.month,
-        selectedDay: selectedDate.day,
-        selectedDate: selectedDate.dateString,
-      });
+      if (markedDates[selectedDate.dateString]) {
+        setIsModalVisible(true);
+      } else {
+        navigation.navigate("WriteDiary", {
+          selectedMonth: selectedDate.month,
+          selectedDay: selectedDate.day,
+          selectedDate: selectedDate.dateString,
+        });
+      }
     } else {
-      alert("날짜를 선택해주세요.");
+      setIsNoDateSelectedModalVisible(true);
     }
   };
 
@@ -42,30 +85,56 @@ const ChooseDate = ({ navigation }) => {
       <Text style={styles.subtitle}>작성하고 싶은 날을 선택해주세요.</Text>
       <View style={styles.calendarContainer}>
         <Calendar
-          current={"2024-08-01"}
+          current={today}
           monthFormat={"M월"}
           onDayPress={(day) => {
             setSelectedDate(day);
           }}
-          markedDates={
-            selectedDate
-              ? {
-                  [selectedDate.dateString]: {
-                    selected: true,
-                    marked: true,
-                    selectedColor: "#6C99F0"
-                  },
-                }
-              : {}
-          }
+          markedDates={{
+            ...markedDates,
+            ...(selectedDate && {
+              [selectedDate.dateString]: {
+                selected: true,
+                marked: true,
+                selectedColor: "#6C99F0",
+              },
+            }),
+          }}
           theme={{
             arrowColor: "#4A90E2",
             todayTextColor: "#4A90E2",
             selectedDayBackgroundColor: "#4A90E2",
             selectedDayTextColor: "#FFFFFF",
           }}
+          maxDate={today}
         />
       </View>
+
+      {/* 이미 작성된 일기가 있을 때 */}
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalText}>이미 작성된 일기가 있어요.</Text>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <Text style={styles.closeButtonText}>다른 날 선택</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+      {/* 날짜를 선택하지 않았을 때 */}
+      <Modal isVisible={isNoDateSelectedModalVisible}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalText}>날짜를 선택해주세요.</Text>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setIsNoDateSelectedModalVisible(false)}
+          >
+            <Text style={styles.closeButtonText}>확인</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -125,6 +194,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
+    alignItems: "center",
+  },
+  modalText: {
+    fontSize: 15,
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#22215B",
+  },
+  closeButtonText: {
+    color: "#666666",
+    fontSize: 13,
+    marginBottom: 3,
   },
 });
 

@@ -49,7 +49,13 @@ const ChooseDetails = ({ navigation, route }) => {
         }
       )
       .then((res) => {
-        navigation.navigate("MainPage");
+        navigation.navigate("ShowDiary", {
+          selectedDay,
+          selectedMonth,
+          selectedDate,
+          title,
+          content,
+        });
       })
       .catch((err) => {
         console.log(err, "hi");
@@ -209,7 +215,7 @@ const ChooseDetails = ({ navigation, route }) => {
           style={styles.input}
           value={inputText}
           onChangeText={setInputText}
-          placeholder="작성을 간단하게 입력해주시면 좋아요."
+          placeholder="착장을 간단하게 입력해주시면 좋아요."
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Icon name="send" size={20} color="#FFF" />

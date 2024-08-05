@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Modal from "react-native-modal";
 
 const backIcon = require("./assets/back.png");
 
@@ -15,6 +16,21 @@ const WriteDiary = ({ navigation, route }) => {
   const { selectedMonth, selectedDay, selectedDate } = route.params;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handleNext = () => {
+    if (!title.trim() || !content.trim()) {
+      setIsModalVisible(true);
+    } else {
+      navigation.navigate("ChooseWeather", {
+        selectedDay,
+        selectedMonth,
+        selectedDate,
+        title,
+        content,
+      });
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,18 +54,7 @@ const WriteDiary = ({ navigation, route }) => {
         <Text style={styles.navTitle}>
           {selectedMonth}월 {selectedDay}일의 일기
         </Text>
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() =>
-            navigation.navigate("ChooseWeather", {
-              selectedDay: selectedDay,
-              selectedMonth: selectedMonth,
-              selectedDate: selectedDate,
-              title: title,
-              content: content,
-            })
-          }
-        >
+        <TouchableOpacity style={styles.navButton} onPress={handleNext}>
           <Text style={styles.navButtonnextText}>다음</Text>
         </TouchableOpacity>
       </View>
@@ -91,6 +96,18 @@ const WriteDiary = ({ navigation, route }) => {
           <Text style={styles.tooltipButtonText}>✎</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalText}>제목과 내용을 작성해주세요.</Text>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <Text style={styles.closeButtonText}>확인</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -213,6 +230,25 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#4A90E2",
     marginBottom: 5,
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
+    alignItems: "center",
+  },
+  modalText: {
+    fontSize: 15,
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#22215B",
+  },
+  closeButtonText: {
+    color: "#666666",
+    fontSize: 13,
+    marginBottom: 3,
   },
 });
 
