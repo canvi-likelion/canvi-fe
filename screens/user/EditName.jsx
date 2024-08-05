@@ -8,17 +8,15 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-const backIcon = require("../../assets/back2.png");
+import backIcon from "../../assets/back2.png";
 
 const EditName = ({ navigation }) => {
-  const reduxUserInfo = useSelector((state) => state.userInfo);
-  const [name, setName] = useState(reduxUserInfo.userName);
-  const dispatch = useDispatch();
+  const { userName } = useSelector((state) => state.userInfo);
+  const [name, setName] = useState(userName);
 
   const handleNameChange = () => {
-    dispatch({ type: "UPDATE_USER_NAME", payload: name });
     navigation.goBack();
   };
 
@@ -32,20 +30,25 @@ const EditName = ({ navigation }) => {
       </TouchableOpacity>
 
       <Text style={styles.headerText}>내 정보</Text>
-      
+
       <View style={styles.editItem}>
         <Text style={styles.infoTitle}>이름</Text>
         <TextInput
           style={styles.infoContent}
           value={name}
           onChangeText={setName}
+          placeholder="이름을 입력하세요"
         />
         <TouchableOpacity onPress={() => setName("")}>
           <Icon name="close-circle-outline" size={20} color="#A8A8A8" />
         </TouchableOpacity>
       </View>
-      
-      <TouchableOpacity style={styles.saveButton} onPress={handleNameChange}>
+
+      <TouchableOpacity
+        style={[styles.saveButton, !name && styles.disabledButton]}
+        onPress={handleNameChange}
+        disabled={!name}
+      >
         <Text style={styles.saveButtonText}>변경하기</Text>
       </TouchableOpacity>
     </View>
@@ -110,6 +113,9 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 15,
     fontWeight: "bold",
+  },
+  disabledButton: {
+    opacity: 0.5,
   },
 });
 

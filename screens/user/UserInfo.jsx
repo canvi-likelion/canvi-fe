@@ -1,12 +1,32 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 
-const backIcon = require("../../assets/back2.png");
+import backIcon from "../../assets/back2.png";
 
 const UserInfo = ({ navigation }) => {
-  const reduxUserInfo = useSelector((state) => state.userInfo);
+  const { userName, email } = useSelector((state) => state.userInfo);
+
+  const renderInfoItem = (title, content, onPress, showArrow = false) => (
+    <>
+      <Text style={styles.myPageSectionTitle}>{title}</Text>
+      <TouchableOpacity
+        style={styles.myPageItem}
+        onPress={onPress}
+        disabled={!onPress}
+      >
+        <Text style={styles.myPageItemText}>{content}</Text>
+        {showArrow && (
+          <Icon
+            name="chevron-forward-outline"
+            size={18}
+            color="#666666"
+          />
+        )}
+      </TouchableOpacity>
+    </>
+  );
 
   return (
     <View style={styles.container}>
@@ -20,38 +40,9 @@ const UserInfo = ({ navigation }) => {
       <Text style={styles.headerText}>내 정보</Text>
 
       <View style={styles.myPageInfoContainer}>
-        <Text style={styles.myPageSectionTitle}>이름</Text>
-        <TouchableOpacity
-          style={styles.myPageItem}
-          onPress={() => navigation.navigate("EditName")}
-        >
-          <Text style={styles.myPageItemText}>{reduxUserInfo.userName}</Text>
-          <Icon
-            name="chevron-forward-outline"
-            size={18}
-            color="#666666"
-          />
-        </TouchableOpacity> 
-
-        <Text style={styles.myPageSectionTitle}>이메일</Text>
-        <TouchableOpacity
-          style={styles.myPageItem}
-        >
-          <Text style={styles.myPageItemText}>useremail</Text>
-        </TouchableOpacity> 
-
-        <Text style={styles.myPageSectionTitle}>비밀번호 변경</Text>
-        <TouchableOpacity
-          style={styles.myPageItem}
-          onPress={() => navigation.navigate("ChangePasswordStep1")}
-        >
-          <Text style={styles.myPageItemText}>********</Text>
-          <Icon
-            name="chevron-forward-outline"
-            size={18}
-            color="#666666"
-          />
-        </TouchableOpacity> 
+        {renderInfoItem("이름", userName, () => navigation.navigate("EditName"), true)}
+        {renderInfoItem("이메일", email)}
+        {renderInfoItem("비밀번호 변경", "********", () => navigation.navigate("ChangePasswordStep1"), true)}
       </View>
     </View>
   );
