@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,11 +8,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { requestApi } from "../../utils/apiSetting";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
-
-const backIcon = require("../../assets/back.png");
+import { requestApi } from "../../utils/apiSetting";
+import backIcon from "../../assets/back.png";
 
 const AIWriteDiary = ({ navigation, route }) => {
   const [prompt, setPrompt] = useState("");
@@ -32,10 +30,10 @@ const AIWriteDiary = ({ navigation, route }) => {
         console.log(res.data.data.gptResult);
         navigation.navigate("AICompleteDiary", {
           gptResult: res.data.data.gptResult,
-          selectedMonth: selectedMonth,
-          selectedDay: selectedDay,
-          selectedDate: selectedDate,
-          subject: subject,
+          selectedMonth,
+          selectedDay,
+          selectedDate,
+          subject,
         });
       })
       .catch((err) => {
@@ -75,10 +73,7 @@ const AIWriteDiary = ({ navigation, route }) => {
       <View style={styles.buttoncontainer}>
         <TouchableOpacity
           style={styles.createButton}
-          onPress={() => {
-            handleGenerateText();
-          }}
-          disabled={isLoading}
+          onPress={handleGenerateText}
         >
           <Text style={styles.createButtonText}>생성하기</Text>
         </TouchableOpacity>
