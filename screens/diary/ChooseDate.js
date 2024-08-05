@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Calendar } from "react-native-calendars";
-
-const backIcon = require("../../assets/back.png");
+import backIcon from "../../assets/back.png";
 
 const ChooseDate = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
+  const isNextDisabled = useMemo(() => !selectedDate, [selectedDate]);
+
   const handleNext = () => {
-    if (selectedDate) {
+    if (!isNextDisabled) {
       navigation.navigate("WriteDiary", {
         selectedMonth: selectedDate.month,
         selectedDay: selectedDate.day,
         selectedDate: selectedDate.dateString,
       });
-    } else {
-      alert("날짜를 선택해주세요.");
     }
   };
 
@@ -30,12 +29,26 @@ const ChooseDate = ({ navigation }) => {
       </TouchableOpacity>
 
       <View style={styles.navigation}>
-        <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.goBack()}
+        >
           <Text style={styles.navButtonbackText}>취소</Text>
         </TouchableOpacity>
         <Text style={styles.navTitle}>오늘의 일기</Text>
-        <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-          <Text style={styles.navButtonnextText}>다음</Text>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={handleNext}
+          disabled={isNextDisabled}
+        >
+          <Text
+            style={[
+              styles.navButtonnextText,
+              isNextDisabled ? styles.disabledText : styles.activeText,
+            ]}
+          >
+            다음
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -53,7 +66,7 @@ const ChooseDate = ({ navigation }) => {
                   [selectedDate.dateString]: {
                     selected: true,
                     marked: true,
-                    selectedColor: "#6C99F0"
+                    selectedColor: "#6C99F0",
                   },
                 }
               : {}
@@ -91,17 +104,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
   },
-  navButton: {
-    padding: 10,
-  },
-  navButtonbackText: {
-    fontSize: 13,
-    color: "#B8CBF0",
-  },
-  navButtonnextText: {
-    fontSize: 13,
-    color: "#6C99F0",
-  },
   navTitle: {
     fontSize: 22,
     fontWeight: "bold",
@@ -125,6 +127,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
+  },
+  navButton: {
+    padding: 20,
+  },
+  navButtonbackText: {
+    fontSize: 13,
+    color: "#B8CBF0",
+  },
+  navButtonnextText: {
+    fontSize: 13,
+  },
+  activeText: {
+    color: "#6C99F0",
+  },
+  disabledText: {
+    color: "#B8CBF0",
   },
 });
 
