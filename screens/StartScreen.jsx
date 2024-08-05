@@ -1,12 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-
-const main1Image = require('../assets/main1.png');
-const main2Image = require('../assets/main2.png');
-const main3Image = require('../assets/main3.png');
-
-const { width: screenWidth } = Dimensions.get('window');
+import main1Image from '../assets/main1.png';
+import main2Image from '../assets/main2.png';
+import main3Image from '../assets/main3.png';
 
 const StartScreen = ({ navigation }) => {
   const entries = [

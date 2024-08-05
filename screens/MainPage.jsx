@@ -12,18 +12,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { Calendar } from "react-native-calendars";
-import { createStackNavigator } from "@react-navigation/stack";
 import { requestApi } from "../utils/apiSetting";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-const icon = require("../assets/icon.png");
-const checkicon = require("../assets/checkicon.png");
-const Stack = createStackNavigator();
-
-const ex1 = require("../assets/ex/ex1.png");
-const ex2 = require("../assets/ex/ex2.png");
-const ex3 = require("../assets/ex/ex3.png");
+import icon from "../assets/icon.png";
+import checkicon from "../assets/checkicon.png";
+import ex1 from "../assets/ex/ex1.png";
+import ex2 from "../assets/ex/ex2.png";
+import ex3 from "../assets/ex/ex3.png";
+import profileImage from "../assets/img/profile.png";
 
 const MainPage = ({ navigation }) => {
   const reduxUserInfo = useSelector((state) => state.userInfo);
@@ -45,7 +43,7 @@ const MainPage = ({ navigation }) => {
             <View style={styles.header}>
               <View style={styles.userinform}>
                 <Image
-                  source={require("../assets/img/profile.png")}
+                  source={profileImage}
                   style={styles.profileImage}
                 />
                 <View style={styles.textbox}>
@@ -61,7 +59,7 @@ const MainPage = ({ navigation }) => {
                 style={styles.startButton}
                 onPress={() => navigation.navigate("MakeDiary")}
               >
-                <Text style={styles.startButtonText}>Let's Start</Text>
+                <Text style={styles.startButtonText}>Let&#39;s Start</Text>
               </TouchableOpacity>
             </View>
 
@@ -147,7 +145,7 @@ const MainPage = ({ navigation }) => {
           <View style={styles.calendarView}>
             <View style={styles.calendarHeader}>
               <Image
-                source={require("../assets/img/profile.png")}
+                source={profileImage}
                 style={styles.calendarProfileImage}
               />
               <View>
@@ -221,7 +219,7 @@ const MainPage = ({ navigation }) => {
           <View style={styles.myPageView}>
             <View style={styles.myPageHeader}>
               <Image
-                source={require("../assets/img/profile.png")}
+                source={profileImage}
                 style={styles.myPageProfileImage}
               />
               <Text style={styles.myPageHeaderText}>
