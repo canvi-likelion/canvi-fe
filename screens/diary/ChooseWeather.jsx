@@ -77,7 +77,7 @@ const ChooseWeather = ({ navigation, route }) => {
             style={[
               styles.weatherIconContainer,
               selectedWeather === iconName &&
-              styles.selectedWeatherIconContainer,
+                styles.selectedWeatherIconContainer,
             ]}
           >
             <Icon

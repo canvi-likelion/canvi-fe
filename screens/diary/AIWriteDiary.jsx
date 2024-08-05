@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
@@ -16,33 +19,90 @@ import backIcon from "../../assets/back.png";
 const AIWriteDiary = ({ navigation, route }) => {
   const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const flatListRef = useRef(null);
   const reduxUserInfo = useSelector((state) => state.userInfo);
   const { selectedMonth, selectedDay, selectedDate, subject } = route.params;
 
-  const handleGenerateText = () => {
-    setIsLoading(true);
-    requestApi
-      .post("/api/gpt", {
-        username: reduxUserInfo.userName,
-        prompt: prompt,
-      })
-      .then((res) => {
-        console.log(res.data.data.gptResult);
-        navigation.navigate("AICompleteDiary", {
-          gptResult: res.data.data.gptResult,
-          selectedMonth,
-          selectedDay,
-          selectedDate,
-          subject,
+  useEffect(() => {
+    setMessages([{ type: "gpt", text: subject }]);
+  }, [subject]);
+
+  const handleSend = () => {
+    if (prompt.trim()) {
+      setMessages([...messages, { type: "user", text: prompt }]);
+      setIsLoading(true);
+
+      requestApi
+        .post("/api/gpt", {
+          username: reduxUserInfo.userName,
+          prompt: prompt,
+        })
+        .then((res) => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { type: "gpt", text: res.data.data.gptResult },
+          ]);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setPrompt("");
+          flatListRef.current.scrollToEnd({ animated: true });
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    }
   };
+
+  const handleSaveDiary = () => {
+    const firstGptQuestion = messages.find((msg) => msg.type === "gpt");
+
+    const lastGptResponse = messages
+      .reverse()
+      .find((msg) => msg.type === "gpt");
+
+    if (firstGptQuestion && lastGptResponse) {
+      requestApi
+        .post(
+          "/diaries",
+          {
+            title: firstGptQuestion.text,
+            content: lastGptResponse.text,
+            diaryDate: selectedDate,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${reduxUserInfo.accessToken}`,
+            },
+          }
+        )
+        .then(() => {
+          navigation.navigate("ShowDiary", {
+            selectedMonth,
+            selectedDay,
+            title: firstGptQuestion.text,
+            content: lastGptResponse.text,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const renderItem = ({ item }) => (
+    <View
+      style={[
+        styles.speechBubble,
+        item.type === "user"
+          ? styles.speechBubbleGray
+          : styles.speechBubbleBlue,
+      ]}
+    >
+      <Text style={styles.bubbleText}>{item.text}</Text>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,35 +121,49 @@ const AIWriteDiary = ({ navigation, route }) => {
           <Text style={styles.navButtonbackText}>취소</Text>
         </TouchableOpacity>
         <Text style={styles.navTitle}>도와드릴게요.</Text>
+        <TouchableOpacity style={styles.navButton} onPress={handleSaveDiary}>
+          <Text style={styles.navButtonnextText}>생성</Text>
+        </TouchableOpacity>
       </View>
 
       <Text style={styles.subtitle}>같이 작성해보아요.</Text>
 
-      <View style={styles.chatContainer}></View>
-      {isLoading && (
-        <ActivityIndicator size="small" color="#6C99F0" style={styles.loader} />
-      )}
-
-      <View style={styles.buttoncontainer}>
-        <TouchableOpacity
-          style={styles.createButton}
-          onPress={handleGenerateText}
-        >
-          <Text style={styles.createButtonText}>생성하기</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="tex.."
-          value={prompt}
-          onChangeText={setPrompt}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      >
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={styles.chatContent}
+          onContentSizeChange={() =>
+            flatListRef.current.scrollToEnd({ animated: true })
+          }
         />
-        <TouchableOpacity style={styles.sendButton}>
-          <Text style={styles.sendButtonText}>➤</Text>
-        </TouchableOpacity>
-      </View>
+
+        {isLoading && (
+          <ActivityIndicator
+            size="small"
+            color="#6C99F0"
+            style={styles.loader}
+          />
+        )}
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="메시지를 입력하세요..."
+            value={prompt}
+            onChangeText={setPrompt}
+          />
+          <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+            <Text style={styles.sendButtonText}>➤</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -114,7 +188,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     alignItems: "center",
-    width: 265,
   },
   navButton: {
     padding: 10,
@@ -122,6 +195,10 @@ const styles = StyleSheet.create({
   navButtonbackText: {
     fontSize: 13,
     color: "#B8CBF0",
+  },
+  navButtonnextText: {
+    fontSize: 13,
+    color: "#6C99F0",
   },
   navTitle: {
     fontSize: 22,
@@ -134,46 +211,26 @@ const styles = StyleSheet.create({
     color: "#666666",
     marginBottom: 20,
   },
-  chatContainer: {
-    flex: 1,
-    justifyContent: "flex-start",
-    margin: 20,
+  chatContent: {
+    padding: 20,
+    paddingve: 10,
+  },
+  speechBubble: {
+    padding: 10,
+    borderRadius: 15,
+    marginBottom: 10,
+    maxWidth: "80%",
   },
   speechBubbleGray: {
-    backgroundColor: "#C4C4C4",
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
-    alignSelf: "flex-start",
-  },
-  speechBubbleBlue: {
-    backgroundColor: "#4A90E2",
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
+    backgroundColor: "#6C99F0",
     alignSelf: "flex-end",
   },
-  bubbleTextBold: {
-    fontWeight: "bold",
-    marginBottom: 5,
+  speechBubbleBlue: {
+    backgroundColor: "#9F9EA1",
+    alignSelf: "flex-start",
   },
   bubbleText: {
     color: "#FFFFFF",
-  },
-  buttoncontainer: {
-    alignItems: "center",
-  },
-  createButton: {
-    backgroundColor: "#FFF",
-    paddingVertical: 10,
-    borderRadius: 25,
-    alignItems: "center",
-    marginVertical: 10,
-    width: 120,
-  },
-  createButtonText: {
-    color: "#6C99F0",
-    fontSize: 16,
   },
   inputContainer: {
     flexDirection: "row",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -25,7 +25,34 @@ import profileImage from "../assets/img/profile.png";
 
 const MainPage = ({ navigation }) => {
   const reduxUserInfo = useSelector((state) => state.userInfo);
+  const today = new Date().toISOString().split("T")[0];
   const [selectedTab, setSelectedTab] = useState("홈");
+  const [markedDates, setMarkedDates] = useState({});
+
+  useEffect(() => {
+    requestApi
+      .get("/diaries", {
+        headers: {
+          Authorization: `Bearer ${reduxUserInfo.accessToken}`,
+        },
+      })
+      .then((res) => {
+        const diaryList = res.data.result.diaryGetResponseList;
+        const markedDatesTemp = {};
+
+        diaryList.forEach((diary) => {
+          markedDatesTemp[diary.date] = {
+            marked: true,
+            dotColor: "#6C99F0",
+          };
+        });
+
+        setMarkedDates(markedDatesTemp);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [reduxUserInfo.accessToken]);
 
   const handleTabPress = (tabName) => {
     setSelectedTab(tabName);
@@ -158,6 +185,7 @@ const MainPage = ({ navigation }) => {
               <Calendar
                 monthFormat={"M월"}
                 style={styles.calendar}
+                maxDate={today}
                 onDayPress={(day) => {
                   requestApi
                     .get("/diaries", {
@@ -182,13 +210,15 @@ const MainPage = ({ navigation }) => {
                         diaryList,
                         targetDate
                       );
-                      navigation.navigate("ShowDiary", {
-                        title: matchingDiary.title,
-                        content: matchingDiary.content,
-                        selectedMonth: day.month,
-                        selectedDay: day.day,
-                        selectedDate: day.dateString,
-                      });
+                      if (matchingDiary) {
+                        navigation.navigate("ShowDiary", {
+                          title: matchingDiary.title,
+                          content: matchingDiary.content,
+                          selectedMonth: day.month,
+                          selectedDay: day.day,
+                          selectedDate: day.dateString,
+                        });
+                      }
                     })
                     .catch((err) => {
                       console.log(err);
@@ -200,13 +230,7 @@ const MainPage = ({ navigation }) => {
                   selectedDayBackgroundColor: "#4A90E2",
                   selectedDayTextColor: "#ffffff",
                 }}
-                markedDates={{
-                  "2023-07-16": {
-                    selected: true,
-                    marked: true,
-                    selectedColor: "#4A90E2",
-                  },
-                }}
+                markedDates={markedDates} // 저장된 일기의 날짜 표시
               />
             </View>
           </View>
