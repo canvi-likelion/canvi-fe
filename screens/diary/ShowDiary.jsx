@@ -8,34 +8,29 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState, useEffect } from "react";
-import { requestApi } from "../../utils/apiSetting";
-import { useSelector } from "react-redux";
-
-const backIcon = require('../../assets/back.png');
+import backIcon from "../../assets/back.png";
+import completeMakeAiDiaryImage from "../../assets/img/completeMakeAiDiary.png";
 
 const ShowDiary = ({ navigation, route }) => {
   const { selectedMonth, selectedDay, title, content } = route.params; // Access the passed date parameter
-  const reduxUserInfo = useSelector((state) => state.userInfo);
-
   const handleDiary = () => {
     navigation.navigate("MainPage");
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
-          <Image source={backIcon} style={styles.icon} />
+      <TouchableOpacity
+        style={styles.backContainer}
+        onPress={() => navigation.goBack()}
+      >
+        <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
 
       <View style={styles.content}>
         <Text style={styles.dateText}>
           {selectedMonth}월 {selectedDay}일
         </Text>
-        <Image
-          source={require("../../assets/img/completeMakeAiDiary.png")}
-          style={styles.image}
-        />
+        <Image source={completeMakeAiDiaryImage} style={styles.image} />
         <Text style={styles.title}>{title}</Text>
         <ScrollView style={styles.scrollview}>
           <Text style={styles.description}>{content}</Text>

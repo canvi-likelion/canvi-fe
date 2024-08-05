@@ -8,11 +8,10 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useState, useEffect } from "react";
 import { requestApi } from "../../utils/apiSetting";
 import { useSelector } from "react-redux";
-
-const backIcon = require("../../assets/back.png");
+import backIcon from "../../assets/back.png";
+import completeMakeAiDiaryImage from "../../assets/img/completeMakeAiDiary.png";
 
 const AICompleteDiary = ({ navigation, route }) => {
   const { gptResult, selectedMonth, selectedDay, selectedDate, subject } =
@@ -34,7 +33,7 @@ const AICompleteDiary = ({ navigation, route }) => {
           },
         }
       )
-      .then((res) => {
+      .then(() => {
         navigation.navigate("MainPage");
       })
       .catch((err) => {
@@ -55,10 +54,7 @@ const AICompleteDiary = ({ navigation, route }) => {
         <Text style={styles.dateText}>
           {selectedMonth}월 {selectedDay}일
         </Text>
-        <Image
-          source={require("../../assets/img/completeMakeAiDiary.png")}
-          style={styles.image}
-        />
+        <Image source={completeMakeAiDiaryImage} style={styles.image} />
         <Text style={styles.title}>{subject}</Text>
         <ScrollView style={styles.scrollview}>
           <Text style={styles.description}>{gptResult}</Text>

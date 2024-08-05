@@ -8,8 +8,7 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-
-const backIcon = require("../../../assets/back2.png");
+import backIcon from "../../../assets/back2.png";
 
 const ChangePasswordStep2 = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState("");
@@ -64,13 +63,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginBottom: 20,
-  },
-  headerText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
-    color: "#666666",
   },
   headerText: {
     fontSize: 16,

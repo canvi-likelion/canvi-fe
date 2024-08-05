@@ -1,7 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native';
-
-const checkIcon = require('../../../assets/check.png');
+import React from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import checkIcon from "../../../assets/check.png";
 
 const SignupScreenEmail = ({ navigation }) => {
   return (
@@ -14,7 +13,7 @@ const SignupScreenEmail = ({ navigation }) => {
 
       <View style={styles.footerContainer}>
         <View style={styles.footer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <Text style={styles.footerLink}>첫 로그인 하러 가기</Text>
           </TouchableOpacity>
         </View>
@@ -26,16 +25,16 @@ const SignupScreenEmail = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F0F0',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: "#F0F0F0",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
   },
   contentContainer: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
   logo: {
     width: 200,
@@ -44,29 +43,29 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
-    color: '#22215B',
+    fontWeight: "bold",
+    color: "#22215B",
     marginBottom: 15,
   },
   text: {
     fontSize: 14,
-    color: '22215B',
-    fontWeight: 'bold',
+    color: "22215B",
+    fontWeight: "bold",
   },
   footerContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center",
     marginBottom: 20,
   },
   footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   footerLink: {
-    color: '#2F69D9',
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
+    color: "#2F69D9",
+    fontWeight: "bold",
+    textDecorationLine: "underline",
     fontSize: 16,
   },
 });

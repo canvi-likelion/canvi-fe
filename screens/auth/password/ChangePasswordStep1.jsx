@@ -8,11 +8,10 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import backIcon from "../../../assets/back2.png";
 
-const backIcon = require("../../../assets/back2.png");
-
-const ChangePasswordStep3 = ({ navigation }) => {
-  const [confirmPassword, setConfirmPassword] = useState("");
+const ChangePasswordStep1 = ({ navigation }) => {
+  const [currentPassword, setCurrentPassword] = useState("");
 
   return (
     <View style={styles.container}>
@@ -25,25 +24,23 @@ const ChangePasswordStep3 = ({ navigation }) => {
 
       <Text style={styles.headerText}>내 정보</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>새로운 비밀번호</Text>
+        <Text style={styles.label}>비밀번호</Text>
         <TextInput
           style={styles.input}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
+          value={currentPassword}
+          onChangeText={setCurrentPassword}
           secureTextEntry
-          placeholder="다시 한 번 새로운 비밀번호를 입력해 주세요."
+          placeholder="기존 비밀번호를 입력해 주세요."
         />
-        <TouchableOpacity onPress={() => setConfirmPassword("")}>
+        <TouchableOpacity onPress={() => setCurrentPassword("")}>
           <Icon name="close-circle-outline" size={20} color="#A8A8A8" />
         </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => {
-          /* Handle password change */
-        }}
+        onPress={() => navigation.navigate("ChangePasswordStep2")}
       >
-        <Text style={styles.buttonText} onPress={() => navigation.navigate('Login')}>비밀번호 변경하기</Text>
+        <Text style={styles.buttonText}>다음</Text>
       </TouchableOpacity>
     </View>
   );
@@ -107,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChangePasswordStep3;
+export default ChangePasswordStep1;
