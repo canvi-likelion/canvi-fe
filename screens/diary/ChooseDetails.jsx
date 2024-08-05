@@ -7,15 +7,12 @@ import {
   TextInput,
   ScrollView,
   Image,
-  KeyboardAvoidingView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { requestApi } from "../../utils/apiSetting";
 import { useSelector } from "react-redux";
-
-const backIcon = require("../../assets/back.png");
+import { requestApi } from "../../utils/apiSetting";
+import backIcon from "../../assets/back.png";
 
 const ChooseDetails = ({ navigation, route }) => {
   const [selectedGender, setSelectedGender] = useState(null);
@@ -24,7 +21,7 @@ const ChooseDetails = ({ navigation, route }) => {
   const [inputText, setInputText] = useState("");
   const reduxUserInfo = useSelector((state) => state.userInfo);
   const { selectedDay, selectedMonth, selectedDate, title, content } =
-    route.params; // Access the passed date parameter
+    route.params;
 
   const handleSend = () => {
     if (inputText.trim()) {
@@ -38,9 +35,12 @@ const ChooseDetails = ({ navigation, route }) => {
       .post(
         "/diaries",
         {
-          title: title,
-          content: content,
+          title,
+          content,
           diaryDate: selectedDate,
+          gender: selectedGender,
+          hairStyle: selectedHairStyle,
+          additionalNotes: messages.join(", "),
         },
         {
           headers: {
@@ -48,11 +48,11 @@ const ChooseDetails = ({ navigation, route }) => {
           },
         }
       )
-      .then((res) => {
+      .then(() => {
         navigation.navigate("MainPage");
       })
       .catch((err) => {
-        console.log(err, "hi");
+        console.log(err, "Error creating diary");
       });
   };
 
@@ -75,10 +75,8 @@ const ChooseDetails = ({ navigation, route }) => {
         <Text style={styles.navTitle}>
           {selectedMonth}월 {selectedDay}일의 일기
         </Text>
-        <TouchableOpacity style={styles.navButton}>
-          <Text style={styles.navButtonnextText} onPress={() => handleDiary()}>
-            생성
-          </Text>
+        <TouchableOpacity style={styles.navButton} onPress={handleDiary}>
+          <Text style={styles.navButtonnextText}>생성</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.subtitle}>세부 정보를 선택해주세요.</Text>
@@ -347,6 +345,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#666666",
     marginBottom: 20,
+  },
+  activeText: {
+    color: "#6C99F0",
+  },
+  disabledText: {
+    color: "#B8CBF0",
   },
 });
 
