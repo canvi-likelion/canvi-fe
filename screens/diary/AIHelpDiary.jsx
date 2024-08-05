@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
-
-const backIcon = require("../../assets/back.png");
+import backIcon from "../../assets/back.png";
 
 const AIHelpDiary = ({ navigation, route }) => {
   const { selectedMonth, selectedDay, selectedDate } = route.params;
@@ -219,7 +218,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 5,
     backgroundColor: "#FFF",
-    padding: 10,
     borderRadius: 10,
     padding: 13,
   },
