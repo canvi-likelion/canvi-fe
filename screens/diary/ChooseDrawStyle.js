@@ -9,18 +9,27 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const backIcon = require('../../assets/back.png');
+import backIcon from "../../assets/back.png";
+import drawStyle9 from "../../assets/img/drawStyle9.png";
+import drawStyle1 from "../../assets/img/drawStyle1.png";
+import drawStyle2 from "../../assets/img/drawStyle2.png";
+import drawStyle3 from "../../assets/img/drawStyle3.png";
+import drawStyle4 from "../../assets/img/drawStyle4.png";
+import drawStyle5 from "../../assets/img/drawStyle5.png";
+import drawStyle6 from "../../assets/img/drawStyle6.png";
+import drawStyle7 from "../../assets/img/drawStyle7.png";
+import drawStyle8 from "../../assets/img/drawStyle8.png";
 
 const images = {
-  1: require("../../assets/img/drawStyle9.png"),
-  2: require("../../assets/img/drawStyle1.png"),
-  3: require("../../assets/img/drawStyle2.png"),
-  4: require("../../assets/img/drawStyle3.png"),
-  5: require("../../assets/img/drawStyle4.png"),
-  6: require("../../assets/img/drawStyle5.png"),
-  7: require("../../assets/img/drawStyle6.png"),
-  8: require("../../assets/img/drawStyle7.png"),
-  9: require("../../assets/img/drawStyle8.png"),
+  1: drawStyle9,
+  2: drawStyle1,
+  3: drawStyle2,
+  4: drawStyle3,
+  5: drawStyle4,
+  6: drawStyle5,
+  7: drawStyle6,
+  8: drawStyle7,
+  9: drawStyle8,
 };
 
 const data = [
@@ -38,6 +47,13 @@ const data = [
 const ChooseDrawStyle = ({ navigation }) => {
   const [selectedId, setSelectedId] = useState(null);
 
+  const handleBackPress = () => navigation.goBack();
+  const handleWriteDiaryPress = () => {
+    if (selectedId) {
+      navigation.navigate("ChooseDate", { selectedStyle: selectedId });
+    }
+  };
+
   const renderItem = ({ item }) => {
     const isSelected = selectedId === item.id;
     return (
@@ -53,44 +69,51 @@ const ChooseDrawStyle = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backContainer} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.backContainer} onPress={handleBackPress}>
         <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
 
       <View style={styles.header}>
         <Text style={styles.headerText}>어떤 스타일로 그릴까요?</Text>
       </View>
-      <View style={styles.gridcontainer}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={3}
-        contentContainerStyle={styles.grid}
-      />
+      <View style={styles.gridContainer}>
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={3}
+          contentContainerStyle={styles.grid}
+        />
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("ChooseDate")}>
-        <Text style={styles.buttonText}>일기 작성하기</Text>
+      <TouchableOpacity
+        style={[styles.button, !selectedId && styles.disabledButton]}
+        onPress={handleWriteDiaryPress}
+        disabled={!selectedId}
+      >
+        <Text
+          style={[styles.buttonText, !selectedId && styles.disabledButtonText]}
+        >
+          일기 작성하기
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  backContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 10,
-    marginVertical: 20,
-  },
-  icon: {
-    width: 40,
-    height: 40,
-  },
   container: {
     flex: 1,
     backgroundColor: "#F8F8F8",
     justifyContent: "space-between",
+  },
+  backContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 20,
+  },
+  icon: {
+    width: 40,
+    height: 40,
   },
   header: {
     alignItems: "center",
@@ -100,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 19.2,
     color: "#22215B",
   },
-  gridcontainer: {
+  gridContainer: {
     marginHorizontal: 15,
   },
   grid: {
@@ -121,7 +144,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   gridTitle: {
-    fontSize: 8.96,
+    fontSize: 9,
     color: "#666666",
   },
   button: {
@@ -131,10 +154,16 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
   },
+  disabledButton: {
+    opacity: 0.5,
+  },
   buttonText: {
     color: "#FFFFFF",
     fontSize: 15,
     fontWeight: "bold",
+  },
+  disabledButtonText: {
+    color: "#FFFFFF",
   },
 });
 
