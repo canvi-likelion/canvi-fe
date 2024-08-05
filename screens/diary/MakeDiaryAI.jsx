@@ -4,19 +4,27 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
+import backIcon from "../../assets/back.png";
+import makeNewDiaryImage from "../../assets/img/makeNewDiary2.png";
+import profileImage from "../../assets/img/profile.png";
 
-const backIcon = require("../../assets/back.png");
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const MakeDiaryAI = ({ navigation, route }) => {
   const { selectedDay, selectedMonth, selectedDate } = route.params;
+
+  const handleNext = () => {
+    navigation.navigate("AIHelpDiary", {
+      selectedMonth,
+      selectedDay,
+      selectedDate,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,7 +38,7 @@ const MakeDiaryAI = ({ navigation, route }) => {
       <View style={styles.select}>
         <View style={styles.content}>
           <Image
-            source={require("../../assets/img/makeNewDiary2.png")}
+            source={makeNewDiaryImage}
             style={styles.mainImage}
             resizeMode="contain"
           />
@@ -40,26 +48,14 @@ const MakeDiaryAI = ({ navigation, route }) => {
             이야기를 생생하게 담아드립니다.{"\n"}AI가 당신의 기억을 아름다운
             작품으로 만들어줄 거예요.
           </Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              navigation.navigate("AIHelpDiary", {
-                selectedMonth: selectedMonth,
-                selectedDay: selectedDay,
-                selectedDate: selectedDate,
-              })
-            }
-          >
+          <TouchableOpacity style={styles.button} onPress={handleNext}>
             <Text style={styles.buttonText}>다음</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.profile}>
-        <Image
-          source={require("../../assets/img/profile.png")}
-          style={styles.profileImage}
-        />
+        <Image source={profileImage} style={styles.profileImage} />
       </View>
     </SafeAreaView>
   );
