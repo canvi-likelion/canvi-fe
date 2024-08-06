@@ -53,7 +53,7 @@ const ChooseDetails = ({ navigation, route }) => {
         selectedDate,
       });
     } catch (error) {
-      console.log("Fail to handleDiary");
+      console.log("Fail to handleDiary ", error);
     } finally {
       setIsLoading(false);
     }

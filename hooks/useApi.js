@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { requestApi } from "../utils/apiSetting";
+import base64 from "base64-js";
 
 export const useApi = () => {
   const userInfo = useSelector((state) => state.userInfo);
@@ -140,13 +141,13 @@ export const useApi = () => {
       if (image) {
         const imageResponse = await requestApi.get(`/diaries/${id}/images`, {
           headers: { Authorization: `Bearer ${userInfo.accessToken}` },
-          responseType: "blob",
+          responseType: "arraybuffer",
         });
         if (imageResponse.status === 200) {
-          const blob = new Blob([imageResponse.data], {
-            type: imageResponse.headers["content-type"],
-          });
-          imageUrl = URL.createObjectURL(blob);
+          const base64Data = base64.fromByteArray(
+            new Uint8Array(imageResponse.data)
+          );
+          imageUrl = `data:${imageResponse.headers["content-type"]};base64,${base64Data}`;
         }
       }
 
@@ -156,7 +157,6 @@ export const useApi = () => {
         comment: comment ? comment.comment : null,
         imageUrl,
       };
-      console.log(diaryData.imageUrl);
 
       return diaryData;
     } catch (error) {
