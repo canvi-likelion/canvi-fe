@@ -26,11 +26,9 @@ const StartScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titlemain}>
-        <Text style={styles.title}>세계 최초의 우주 관광선 예약 오픈,</Text>
-        <Text style={styles.title}>대기 리스트 급증</Text>
-        <Text style={styles.subtitle}>
-          빠르고 효과적인 운동 루틴: 15분만에 완벽한 운동
-        </Text>
+        <Text style={styles.title}>당신의 하루를</Text>
+        <Text style={styles.title}>그림으로 표현해 보세요.</Text>
+        <Text style={styles.subtitle}>AI와 함께하는 나만의 그림 일기</Text>
       </View>
 
       <Swiper
