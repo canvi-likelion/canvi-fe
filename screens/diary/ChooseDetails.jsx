@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import backIcon from "../../assets/back.png";
 import { useApi } from "../../hooks/useApi";
+import {useSelector} from "react-redux";
 
 const ChooseDetails = ({ navigation, route }) => {
   const [selectedGender, setSelectedGender] = useState(null);
@@ -31,6 +32,8 @@ const ChooseDetails = ({ navigation, route }) => {
     }
   };
 
+  const {weather, pictureStyle} = useSelector(state => state.pictureInfo);
+
   const handleDiary = async () => {
     setIsLoading(true);
     try {
@@ -44,6 +47,8 @@ const ChooseDetails = ({ navigation, route }) => {
         gender: selectedGender,
         hairStyle: selectedHairStyle,
         clothes: messages.join(", "),
+        weather: weather,
+        pictureStyle: pictureStyle
       };
 
       const diaryId = await createFullDiary(diaryData, imageData);

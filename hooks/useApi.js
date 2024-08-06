@@ -109,9 +109,10 @@ export const useApi = () => {
       const imageUrl = await generateAIImage({
         prompt: diaryData.content,
         gender: imageData.gender,
-        age: imageData.age,
         hairStyle: imageData.hairStyle,
         clothes: imageData.clothes,
+        weather: imageData.weather,
+        pictureStyle: imageData.pictureStyle
       });
 
       await saveDiaryImage(diaryId, imageUrl);
