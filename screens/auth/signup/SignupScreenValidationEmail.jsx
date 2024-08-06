@@ -11,11 +11,13 @@ import {
 import { useSelector } from "react-redux";
 import { requestApi } from "../../../utils/apiSetting";
 import backIcon from "../../../assets/back.png";
+import Modal from "react-native-modal";
 
 const SignupScreenValidationEmail = ({ navigation }) => {
   const [inputEmailCode, setInputEmailCode] = useState("");
-  const [handleNextButton, setHandleNextButton] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const reduxRegisterInfo = useSelector((state) => state.registerInfo);
 
@@ -27,11 +29,19 @@ const SignupScreenValidationEmail = ({ navigation }) => {
         code: inputEmailCode,
       })
       .then((res) => {
-        setHandleNextButton(true);
-        console.log(res.data);
+        setModalMessage("메일 인증이 완료되었습니다.");
+        setIsModalVisible(true);
+        setTimeout(() => {
+          setIsModalVisible(false);
+          navigation.navigate("SignupScreenPW");
+        }, 1000);
       })
       .catch((err) => {
         console.log(err);
+        if (err.response && err.response.status === 400) {
+          setModalMessage("인증 코드를 확인해주세요.");
+          setIsModalVisible(true);
+        }
       })
       .finally(() => {
         setIsLoading(false);
@@ -75,17 +85,11 @@ const SignupScreenValidationEmail = ({ navigation }) => {
 
       <View style={styles.nextbutton}>
         <TouchableOpacity
-          style={!handleNextButton ? styles.button : styles.disableButton}
+          style={styles.button}
           onPress={verifyCode}
-          disabled={handleNextButton || isLoading}
+          disabled={isLoading}
         >
-          <Text
-            style={
-              !handleNextButton ? styles.buttonText : styles.disableButtonText
-            }
-          >
-            인증
-          </Text>
+          <Text style={styles.buttonText}>다음</Text>
         </TouchableOpacity>
         {isLoading && (
           <ActivityIndicator
@@ -96,21 +100,17 @@ const SignupScreenValidationEmail = ({ navigation }) => {
         )}
       </View>
 
-      <View style={styles.nextbutton}>
-        <TouchableOpacity
-          style={handleNextButton ? styles.button : styles.disableButton}
-          onPress={() => navigation.navigate("SignupScreenPW")}
-          disabled={!handleNextButton}
-        >
-          <Text
-            style={
-              handleNextButton ? styles.buttonText : styles.disableButtonText
-            }
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>{modalMessage}</Text>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setIsModalVisible(false)}
           >
-            다음
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <Text style={styles.modalButtonText}>확인</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -190,40 +190,6 @@ const styles = StyleSheet.create({
     height: "100%",
     textAlign: "left",
   },
-  atSymbol: {
-    marginHorizontal: 10,
-    color: "#787878",
-  },
-  inputRight: {
-    height: 60,
-    backgroundColor: "rgba(217, 217, 217, 0.5)",
-    borderRadius: 30,
-    width: "auto",
-    justifyContent: "center",
-    textAlign: "center",
-  },
-  dropdownText: {
-    color: "#787878",
-    fontSize: 16,
-    textAlign: "center",
-    borderRadius: 30,
-    paddingHorizontal: 20,
-  },
-  dropdownTextFocused: {
-    color: "#22215B",
-    textDecorationLine: "underline",
-  },
-  dropdown: {
-    backgroundColor: "rgba(217, 217, 217, 0.5)",
-    borderRadius: 30,
-    marginRight: 20,
-  },
-  dropdownTextStyle: {
-    color: "#787878",
-    fontSize: 16,
-    textAlign: "center",
-    backgroundColor: "rgba(217, 217, 217, 0)",
-  },
   nextbutton: {
     justifyContent: "flex-end",
     alignItems: "center",
@@ -237,19 +203,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  disableButton: {
-    width: "80%",
-    height: 60,
-    backgroundColor: "#f8f8f8",
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  disableButtonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
   buttonText: {
     color: "#ffffff",
     fontSize: 16,
@@ -257,6 +210,27 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 10,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  modalText: {
+    fontSize: 15,
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#22215B",
+  },
+  modalButtonText: {
+    color: "#666666",
+    fontSize: 13,
+    marginBottom: 3,
   },
 });
 
