@@ -10,9 +10,12 @@ import {
 import { useSelector } from "react-redux";
 import { requestApi } from "../../../utils/apiSetting";
 import backIcon from "../../../assets/back.png";
+import Modal from "react-native-modal";
 
 const SignupScreenEmail = ({ navigation }) => {
   const [inputPassword, setInputPassword] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const reduxRegisterInfo = useSelector((state) => state.registerInfo);
 
@@ -27,12 +30,14 @@ const SignupScreenEmail = ({ navigation }) => {
         })
         .then((res) => {
           navigation.navigate("SignupOK");
-
           console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      setModalMessage("비밀번호가 일치하지 않습니다.");
+      setIsModalVisible(true);
     }
   };
 
@@ -66,6 +71,7 @@ const SignupScreenEmail = ({ navigation }) => {
           }}
           placeholder="비밀번호를 입력해주세요."
           placeholderTextColor="#787878"
+          secureTextEntry
         />
       </View>
 
@@ -74,6 +80,18 @@ const SignupScreenEmail = ({ navigation }) => {
           <Text style={styles.buttonText}>계정 생성하기</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>{modalMessage}</Text>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <Text style={styles.modalButtonText}>확인</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -156,6 +174,27 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  modalText: {
+    fontSize: 15,
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#22215B",
+  },
+  modalButtonText: {
+    color: "#666666",
+    fontSize: 13,
+    marginBottom: 3,
   },
 });
 
