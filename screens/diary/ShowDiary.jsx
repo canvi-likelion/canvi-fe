@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -6,16 +6,48 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useApi } from "../../hooks/useApi";
 import backIcon from "../../assets/back.png";
-import completeMakeAiDiaryImage from "../../assets/img/completeMakeAiDiary.png";
+import placeholderImage from "../../assets/img/completeMakeAiDiary.png"; // 기본 이미지 경로
 
 const ShowDiary = ({ navigation, route }) => {
-  const { selectedMonth, selectedDay, title, content } = route.params; // Access the passed date parameter
-  const handleDiary = () => {
+  const { selectedDate } = route.params;
+  const [diaryData, setDiaryData] = useState({
+    title: "",
+    content: "",
+    comment: "",
+    imageUrl: null,
+  });
+  const { getDiary } = useApi();
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchDiaryData = useCallback(async () => {
+    if (!selectedDate) return;
+
+    setIsLoading(true);
+    try {
+      const data = await getDiary(selectedDate);
+      setDiaryData(data);
+    } catch (error) {
+      console.error("Error fetching diary data:", error);
+      // 에러 처리 로직 추가 (예: 사용자에게 알림)
+    } finally {
+      setIsLoading(false);
+    }
+  }, [selectedDate]);
+
+  useEffect(() => {
+    fetchDiaryData();
+  }, [fetchDiaryData]);
+
+  const handleGoHome = () => {
     navigation.navigate("MainPage");
   };
+
+  const [month, day] = selectedDate.split("-").slice(1); // "YYYY-MM-DD" 형식 가정
 
   return (
     <SafeAreaView style={styles.container}>
@@ -28,22 +60,33 @@ const ShowDiary = ({ navigation, route }) => {
 
       <View style={styles.content}>
         <Text style={styles.dateText}>
-          {selectedMonth}월 {selectedDay}일
+          {month}월 {day}일
         </Text>
-        <Image source={completeMakeAiDiaryImage} style={styles.image} />
-        <Text style={styles.title}>{title}</Text>
+        <Image
+          source={
+            diaryData.imageUrl ? { uri: diaryData.imageUrl } : placeholderImage
+          }
+          style={styles.image}
+        />
+        <Text style={styles.title}>{diaryData.title}</Text>
         <ScrollView style={styles.scrollview}>
-          <Text style={styles.description}>{content}</Text>
+          <Text style={styles.description}>{diaryData.content}</Text>
+          <View style={styles.commentContainer}>
+            <Text style={styles.commentTitle}>AI 코멘트:</Text>
+            <Text style={styles.commentText}>{diaryData.comment}</Text>
+          </View>
         </ScrollView>
-        <TouchableOpacity
-          style={styles.homeButton}
-          onPress={() => {
-            handleDiary();
-          }}
-        >
+        <TouchableOpacity style={styles.homeButton} onPress={handleGoHome}>
           <Text style={styles.homeButtonText}>홈으로</Text>
         </TouchableOpacity>
       </View>
+
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#6C99F0" />
+          <Text style={styles.loadingText}>일기 가져오는 중...</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -114,6 +157,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 3,
     textAlign: "center",
+  },
+  commentContainer: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+  },
+  commentTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  commentText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#6C99F0",
   },
 });
 

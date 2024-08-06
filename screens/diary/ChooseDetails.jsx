@@ -7,21 +7,22 @@ import {
   TextInput,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useSelector } from "react-redux";
-import { requestApi } from "../../utils/apiSetting";
 import backIcon from "../../assets/back.png";
+import { useApi } from "../../hooks/useApi";
 
 const ChooseDetails = ({ navigation, route }) => {
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedHairStyle, setSelectedHairStyle] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
-  const reduxUserInfo = useSelector((state) => state.userInfo);
+  const [isLoading, setIsLoading] = useState(false);
   const { selectedDay, selectedMonth, selectedDate, title, content } =
     route.params;
+  const { createFullDiary } = useApi();
 
   const handleSend = () => {
     if (inputText.trim()) {
@@ -30,36 +31,32 @@ const ChooseDetails = ({ navigation, route }) => {
     }
   };
 
-  const handleDiary = () => {
-    requestApi
-      .post(
-        "/diaries",
-        {
-          title,
-          content,
-          diaryDate: selectedDate,
-          gender: selectedGender,
-          hairStyle: selectedHairStyle,
-          additionalNotes: messages.join(", "),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${reduxUserInfo.accessToken}`,
-          },
-        }
-      )
-      .then(() => {
-        navigation.navigate("ShowDiary", {
-          selectedDay,
-          selectedMonth,
-          selectedDate,
-          title,
-          content,
-        });
-      })
-      .catch((err) => {
-        console.log(err, "Error creating diary");
+  const handleDiary = async () => {
+    setIsLoading(true);
+    try {
+      const diaryData = {
+        title: title,
+        content: content,
+        diaryDate: selectedDate,
+      };
+
+      const imageData = {
+        gender: selectedGender,
+        hairStyle: selectedHairStyle,
+        clothes: messages.join(", "),
+      };
+
+      const diaryId = await createFullDiary(diaryData, imageData);
+      console.log("Success to Create Diary ", diaryId);
+
+      navigation.navigate("ShowDiary", {
+        selectedDate,
       });
+    } catch (error) {
+      console.log("Fail to handleDiary");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -219,6 +216,13 @@ const ChooseDetails = ({ navigation, route }) => {
           <Icon name="send" size={20} color="#FFF" />
         </TouchableOpacity>
       </View>
+
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#6C99F0" />
+          <Text style={styles.loadingText}>일기 생성 중...</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -357,6 +361,18 @@ const styles = StyleSheet.create({
   },
   disabledText: {
     color: "#B8CBF0",
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#6C99F0",
   },
 });
 
