@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -22,40 +22,30 @@ const ShowDiary = ({ navigation, route }) => {
     imageUrl: null,
   });
   const { getDiary } = useApi();
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchDiaryData = useCallback(async () => {
+    if (!selectedDate) return;
+
+    setIsLoading(true);
+    try {
+      const data = await getDiary(selectedDate);
+      setDiaryData(data);
+    } catch (error) {
+      console.error("Error fetching diary data:", error);
+      // 에러 처리 로직 추가 (예: 사용자에게 알림)
+    } finally {
+      setIsLoading(false);
+    }
+  }, [selectedDate]);
 
   useEffect(() => {
-    let imageUrl;
-    const fetchDiaryData = async () => {
-      try {
-        const data = await getDiary(selectedDate);
-        setDiaryData(data);
-        imageUrl = data.imageUrl;
-      } catch (error) {
-        console.error("Error fetching diary data:", error);
-        // 에러 처리 로직 추가 (예: 사용자에게 알림)
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDiaryData();
-
-    // Cleanup function
-    return () => {
-      if (imageUrl) {
-        URL.revokeObjectURL(imageUrl);
-      }
-    };
-  }, [selectedDate]);
+  }, [fetchDiaryData]);
 
   const handleGoHome = () => {
     navigation.navigate("MainPage");
   };
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />; // 로딩 스피너 표시
-  }
 
   const [month, day] = selectedDate.split("-").slice(1); // "YYYY-MM-DD" 형식 가정
 
@@ -90,6 +80,13 @@ const ShowDiary = ({ navigation, route }) => {
           <Text style={styles.homeButtonText}>홈으로</Text>
         </TouchableOpacity>
       </View>
+
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#6C99F0" />
+          <Text style={styles.loadingText}>일기 가져오는 중...</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -175,6 +172,18 @@ const styles = StyleSheet.create({
   commentText: {
     fontSize: 14,
     color: "#333",
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#6C99F0",
   },
 });
 
