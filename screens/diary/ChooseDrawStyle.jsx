@@ -19,6 +19,8 @@ import drawStyle5 from "../../assets/img/drawStyle5.png";
 import drawStyle6 from "../../assets/img/drawStyle6.png";
 import drawStyle7 from "../../assets/img/drawStyle7.png";
 import drawStyle8 from "../../assets/img/drawStyle8.png";
+import {useDispatch} from "react-redux";
+import {setPictureStyle} from "../../store/reducers/picture-slice";
 
 const images = {
   1: drawStyle9,
@@ -33,19 +35,21 @@ const images = {
 };
 
 const data = [
-  { id: "1", title: "TYPE 1", image: images[1] },
-  { id: "2", title: "TYPE 2", image: images[2] },
-  { id: "3", title: "TYPE 3", image: images[3] },
-  { id: "4", title: "TYPE 4", image: images[4] },
-  { id: "5", title: "TYPE 5", image: images[5] },
-  { id: "6", title: "TYPE 6", image: images[6] },
-  { id: "7", title: "TYPE 7", image: images[7] },
-  { id: "8", title: "TYPE 8", image: images[8] },
-  { id: "9", title: "TYPE 9", image: images[9] },
+  { id: "1", title: "수채화", image: images[1], value: 'Watercolor style' },
+  { id: "2", title: "연필", image: images[2], value: 'Pencil sketch'  },
+  { id: "3", title: "만화", image: images[3], value: 'Cartoon style'  },
+  { id: "4", title: "디지털 아트", image: images[4], value: 'Digital art'  },
+  { id: "5", title: "레트로 포스터", image: images[5], value: 'Retro poster'  },
+  { id: "6", title: "사진 리얼리즘", image: images[6], value: 'Photorealism'  },
+  { id: "7", title: "미니멀리즘", image: images[7], value: 'Minimalism'  },
+  { id: "8", title: "콜라주", image: images[8], value: 'Collage'  },
+  { id: "9", title: "낙서", image: images[9], value: 'Doodle'  },
 ];
 
 const ChooseDrawStyle = ({ navigation }) => {
   const [selectedId, setSelectedId] = useState(null);
+
+  const dispatch = useDispatch();
 
   const handleBackPress = () => navigation.goBack();
   const handleWriteDiaryPress = () => {
@@ -59,7 +63,10 @@ const ChooseDrawStyle = ({ navigation }) => {
     return (
       <TouchableOpacity
         style={[styles.gridItem, isSelected && styles.selectedGridItem]}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => {
+          setSelectedId(item.id)
+          dispatch(setPictureStyle(item.value))
+        }}
       >
         <Image source={item.image} style={styles.gridImage} />
         <Text style={styles.gridTitle}>{item.title}</Text>

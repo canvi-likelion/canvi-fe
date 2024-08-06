@@ -88,7 +88,7 @@ const WriteDiary = ({ navigation, route }) => {
           style={styles.contentInput}
           placeholder="기록하고 싶은 내용"
           value={content}
-          onChangeText={setContent}
+          onChangeText={z}
           multiline
         />
       </View>
