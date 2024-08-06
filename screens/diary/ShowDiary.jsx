@@ -57,17 +57,20 @@ const ShowDiary = ({ navigation, route }) => {
       >
         <Image source={backIcon} style={styles.icon} />
       </TouchableOpacity>
-
       <View style={styles.content}>
         <Text style={styles.dateText}>
           {month}월 {day}일
         </Text>
-        <Image
-          source={
-            diaryData.imageUrl ? { uri: diaryData.imageUrl } : placeholderImage
-          }
-          style={styles.image}
-        />
+        <View style={styles.imageContainer}>
+          <Image
+            source={
+              diaryData.imageUrl
+                ? { uri: diaryData.imageUrl }
+                : placeholderImage
+            }
+            style={styles.image}
+          />
+        </View>
         <Text style={styles.title}>{diaryData.title}</Text>
         <ScrollView style={styles.scrollview}>
           <Text style={styles.description}>{diaryData.content}</Text>
@@ -126,13 +129,33 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 19.2,
     color: "#666666",
-    marginBottom: 10,
     fontWeight: "bold",
+    marginBottom: 15, // 기존 10에서 15로 증가
+    marginTop: -5, // 위쪽으로 살짝 띄우기
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  imageContainer: {
+    width: 240, // 컨테이너의 크기를 명시적으로 지정
+    height: 240,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 25,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    justifyContent: "center", // 세로 중앙 정렬
+    alignItems: "center", // 가로 중앙 정렬
   },
   image: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
+    width: 220,
+    height: 220,
+    borderRadius: 15,
   },
   title: {
     fontSize: 14,
