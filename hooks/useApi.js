@@ -105,15 +105,15 @@ export const useApi = () => {
         diaryDate: diaryData.diaryDate,
       });
 
-      // const imageUrl = await generateAIImage({
-      //   prompt: diaryData.content,
-      //   gender: imageData.gender,
-      //   age: imageData.age,
-      //   hairStyle: imageData.hairStyle,
-      //   clothes: imageData.clothes,
-      // });
+      const imageUrl = await generateAIImage({
+        prompt: diaryData.content,
+        gender: imageData.gender,
+        age: imageData.age,
+        hairStyle: imageData.hairStyle,
+        clothes: imageData.clothes,
+      });
 
-      // await saveDiaryImage(diaryId, imageUrl);
+      await saveDiaryImage(diaryId, imageUrl);
 
       const aiComment = await generateAIComment({
         username: userInfo.userName,
@@ -134,14 +134,30 @@ export const useApi = () => {
       const response = await requestApi.get(`/diaries/${date}`, {
         headers: { Authorization: `Bearer ${userInfo.accessToken}` },
       });
-      const { title, content, comment, image } = response.data.result;
+      const { id, title, content, comment, image } = response.data.result;
+
+      let imageUrl = null;
+      if (image) {
+        const imageResponse = await requestApi.get(`/diaries/${id}/images`, {
+          headers: { Authorization: `Bearer ${userInfo.accessToken}` },
+          responseType: "blob",
+        });
+        if (imageResponse.status === 200) {
+          const blob = new Blob([imageResponse.data], {
+            type: imageResponse.headers["content-type"],
+          });
+          imageUrl = URL.createObjectURL(blob);
+        }
+      }
+
       const diaryData = {
         title,
         content,
         comment: comment ? comment.comment : null,
-        // imageUrl: image ? image.url : null,
-        imageUrl: "../../assets/image/completeMakeAiDiary.png",
+        imageUrl,
       };
+      console.log(diaryData.imageUrl);
+
       return diaryData;
     } catch (error) {
       console.error("Error fetching diary:", error);

@@ -6,10 +6,12 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useApi } from "../../hooks/useApi";
 import backIcon from "../../assets/back.png";
+import placeholderImage from "../../assets/img/completeMakeAiDiary.png"; // 기본 이미지 경로
 
 const ShowDiary = ({ navigation, route }) => {
   const { selectedDate } = route.params;
@@ -17,30 +19,42 @@ const ShowDiary = ({ navigation, route }) => {
     title: "",
     content: "",
     comment: "",
-    imageUrl: "",
+    imageUrl: null,
   });
   const { getDiary } = useApi();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let imageUrl;
     const fetchDiaryData = async () => {
       try {
         const data = await getDiary(selectedDate);
         setDiaryData(data);
+        imageUrl = data.imageUrl;
       } catch (error) {
         console.error("Error fetching diary data:", error);
         // 에러 처리 로직 추가 (예: 사용자에게 알림)
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchDiaryData();
+
+    // Cleanup function
+    return () => {
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    };
   }, [selectedDate]);
 
   const handleGoHome = () => {
     navigation.navigate("MainPage");
   };
 
-  if (!diaryData) {
-    return <Text>Loading...</Text>; // 또는 로딩 스피너 컴포넌트
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />; // 로딩 스피너 표시
   }
 
   const [month, day] = selectedDate.split("-").slice(1); // "YYYY-MM-DD" 형식 가정
@@ -58,7 +72,12 @@ const ShowDiary = ({ navigation, route }) => {
         <Text style={styles.dateText}>
           {month}월 {day}일
         </Text>
-        <Image source={{ uri: diaryData.imageUrl }} style={styles.image} />
+        <Image
+          source={
+            diaryData.imageUrl ? { uri: diaryData.imageUrl } : placeholderImage
+          }
+          style={styles.image}
+        />
         <Text style={styles.title}>{diaryData.title}</Text>
         <ScrollView style={styles.scrollview}>
           <Text style={styles.description}>{diaryData.content}</Text>
