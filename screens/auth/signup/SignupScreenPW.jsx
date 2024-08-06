@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,38 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { setPassword } from "../../../store/reducers/register-slice";
 import { useDispatch } from "react-redux";
+import { setPassword } from "../../../store/reducers/register-slice";
 import backIcon from "../../../assets/back.png";
+import Modal from "react-native-modal";
 
 const SignupScreenEmail = ({ navigation }) => {
+  const [password, setPasswordState] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const dispatch = useDispatch();
+
+  const validatePassword = (password) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    return (
+      password.length >= 8 &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumbers &&
+      hasSpecialChar
+    );
+  };
+
+  const handleNext = () => {
+    if (validatePassword(password)) {
+      dispatch(setPassword(password));
+      navigation.navigate("SignupScreenPWCheck");
+    } else {
+      setIsModalVisible(true);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -38,25 +64,33 @@ const SignupScreenEmail = ({ navigation }) => {
         </Text>
         <TextInput
           style={styles.input}
-          onChangeText={(text) => {
-            dispatch(setPassword(text));
-          }}
+          onChangeText={(text) => setPasswordState(text)}
           placeholder="비밀번호를 입력해주세요."
           placeholderTextColor="#787878"
+          secureTextEntry
         />
-        <Text style={styles.inputmessamge}>
+        <Text style={styles.inputMessage}>
           특수문자와 대/소문자, 숫자를 사용하여 여덟자리 이상으로 만들어주세요.
         </Text>
       </View>
 
       <View style={styles.nextbutton}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("SignupScreenPWCheck")}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
           <Text style={styles.buttonText}>다음</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>조건에 맞게 비밀번호를 설정해주세요.</Text>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <Text style={styles.modalButtonText}>확인</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -128,7 +162,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 20,
   },
-  inputmessamge: {
+  inputMessage: {
     fontSize: 10,
     color: "#787878",
     marginTop: 5,
@@ -150,6 +184,27 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  modalText: {
+    fontSize: 15,
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#22215B",
+  },
+  modalButtonText: {
+    color: "#666666",
+    fontSize: 13,
+    marginBottom: 3,
   },
 });
 

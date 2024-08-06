@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setEmail } from "../../../store/reducers/register-slice";
 import { requestApi } from "../../../utils/apiSetting";
 import backIcon from "../../../assets/back.png";
+import Modal from "react-native-modal";
 
 const SignupScreenEmail = ({ navigation }) => {
   const [inputEmail, setInputEmail] = useState("");
@@ -20,6 +21,8 @@ const SignupScreenEmail = ({ navigation }) => {
   const domains = ["gmail.com", "naver.com", "kakao.com", "daum.com"];
   const [isFocused, setIsFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const dispatch = useDispatch();
 
@@ -37,10 +40,31 @@ const SignupScreenEmail = ({ navigation }) => {
       })
       .then((res) => {
         console.log(res.data);
-        navigation.navigate("SignupScreenValidationEmail");
+        setModalMessage("메일로 코드가 전송되었습니다.");
+        setIsModalVisible(true);
+        setTimeout(() => {
+          setIsModalVisible(false);
+          navigation.navigate("SignupScreenValidationEmail");
+        }, 1000);
       })
       .catch((err) => {
         console.log(err);
+        if (err.response) {
+          if (err.response.status === 409) {
+            setModalMessage("이미 가입된 이메일입니다.");
+            setIsModalVisible(true);
+          } else if (err.response.status === 429) {
+            setModalMessage("발송된 메일이 있습니다.");
+            setIsModalVisible(true);
+            setTimeout(() => {
+              setIsModalVisible(false);
+              navigation.navigate("SignupScreenValidationEmail");
+            }, 1000);
+          } else {
+            setModalMessage("이메일 전송에 실패했습니다. 다시 시도해 주세요.");
+            setIsModalVisible(true);
+          }
+        }
       })
       .finally(() => {
         setIsLoading(false);
@@ -115,6 +139,18 @@ const SignupScreenEmail = ({ navigation }) => {
           />
         )}
       </View>
+
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>{modalMessage}</Text>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <Text style={styles.modalButtonText}>확인</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -248,6 +284,27 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 10,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  modalText: {
+    fontSize: 15,
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#22215B",
+  },
+  modalButtonText: {
+    color: "#666666",
+    fontSize: 13,
+    marginBottom: 3,
   },
 });
 
