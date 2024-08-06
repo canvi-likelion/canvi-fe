@@ -19,19 +19,19 @@ import drawStyle5 from "../../assets/img/drawStyle5.png";
 import drawStyle6 from "../../assets/img/drawStyle6.png";
 import drawStyle7 from "../../assets/img/drawStyle7.png";
 import drawStyle8 from "../../assets/img/drawStyle8.png";
-import {useDispatch} from "react-redux";
-import {setPictureStyle} from "../../store/reducers/picture-slice";
+import { useDispatch } from "react-redux";
+import { setPictureStyle } from "../../store/reducers/picture-slice";
 
 const images = {
-  1: drawStyle9,
-  2: drawStyle1,
-  3: drawStyle2,
-  4: drawStyle3,
-  5: drawStyle4,
-  6: drawStyle5,
-  7: drawStyle6,
-  8: drawStyle7,
-  9: drawStyle8,
+  1: drawStyle1,
+  2: drawStyle2,
+  3: drawStyle3,
+  4: drawStyle4,
+  5: drawStyle5,
+  6: drawStyle6,
+  7: drawStyle7,
+  8: drawStyle8,
+  9: drawStyle9,
 };
 
 const data = [
@@ -61,49 +61,49 @@ const ChooseDrawStyle = ({ navigation }) => {
   const renderItem = ({ item }) => {
     const isSelected = selectedId === item.id;
     return (
-      <TouchableOpacity
-        style={[styles.gridItem, isSelected && styles.selectedGridItem]}
-        onPress={() => {
-          setSelectedId(item.id)
-          dispatch(setPictureStyle(item.value))
-        }}
-      >
-        <Image source={item.image} style={styles.gridImage} />
-        <Text style={styles.gridTitle}>{item.title}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+            style={[styles.gridItem, isSelected && styles.selectedGridItem]}
+            onPress={() => {
+              setSelectedId(item.id);
+              dispatch(setPictureStyle(item.value));
+            }}
+        >
+          <Image source={item.image} style={styles.gridImage} />
+          <Text style={styles.gridTitle}>{item.title}</Text>
+        </TouchableOpacity>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.backContainer} onPress={handleBackPress}>
-        <Image source={backIcon} style={styles.icon} />
-      </TouchableOpacity>
+      <SafeAreaView style={styles.container}>
+        <TouchableOpacity style={styles.backContainer} onPress={handleBackPress}>
+          <Image source={backIcon} style={styles.icon} />
+        </TouchableOpacity>
 
-      <View style={styles.header}>
-        <Text style={styles.headerText}>어떤 스타일로 그릴까요?</Text>
-      </View>
-      <View style={styles.gridContainer}>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          numColumns={3}
-          contentContainerStyle={styles.grid}
-        />
-      </View>
-      <TouchableOpacity
-        style={[styles.button, !selectedId && styles.disabledButton]}
-        onPress={handleWriteDiaryPress}
-        disabled={!selectedId}
-      >
-        <Text
-          style={[styles.buttonText, !selectedId && styles.disabledButtonText]}
+        <View style={styles.header}>
+          <Text style={styles.headerText}>어떤 스타일로 그릴까요?</Text>
+        </View>
+        <View style={styles.gridContainer}>
+          <FlatList
+              data={data}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+              numColumns={3}
+              contentContainerStyle={styles.grid}
+          />
+        </View>
+        <TouchableOpacity
+            style={[styles.button, !selectedId && styles.disabledButton]}
+            onPress={handleWriteDiaryPress}
+            disabled={!selectedId}
         >
-          일기 작성하기
-        </Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+          <Text
+              style={[styles.buttonText, !selectedId && styles.disabledButtonText]}
+          >
+            일기 작성하기
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
   );
 };
 
@@ -141,18 +141,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     padding: 10,
-    opacity: 1,
+    margin: 5, // Adjust spacing between items if needed
+    width: 100, // Set fixed width
+    height: 100, // Set fixed height
+    justifyContent: "center", // Center content vertically
+  },
+  gridImage: {
+    width: 80, // Set fixed width for image
+    height: 80, // Set fixed height for image
+    borderRadius: 10, // Optional: Rounded corners for image
+    resizeMode: 'cover', // Ensure the image covers the area
   },
   selectedGridItem: {
     opacity: 0.3,
   },
-  gridImage: {
-    width: 100,
-    height: 100,
-  },
   gridTitle: {
-    fontSize: 9,
+    fontSize: 12, // Adjust font size if needed
     color: "#666666",
+    marginTop: 5, // Space between image and title
   },
   button: {
     backgroundColor: "#6C99F0",
