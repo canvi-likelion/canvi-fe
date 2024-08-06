@@ -34,7 +34,7 @@ const AIWriteDiary = ({ navigation, route }) => {
       setIsLoading(true);
 
       requestApi
-        .post("/api/gpt", {
+        .post("/api/gpt/help", {
           username: reduxUserInfo.userName,
           prompt: prompt,
         })
@@ -56,39 +56,11 @@ const AIWriteDiary = ({ navigation, route }) => {
   };
 
   const handleSaveDiary = () => {
-    const firstGptQuestion = messages.find((msg) => msg.type === "gpt");
-
-    const lastGptResponse = messages
-      .reverse()
-      .find((msg) => msg.type === "gpt");
-
-    if (firstGptQuestion && lastGptResponse) {
-      requestApi
-        .post(
-          "/diaries",
-          {
-            title: firstGptQuestion.text,
-            content: lastGptResponse.text,
-            diaryDate: selectedDate,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${reduxUserInfo.accessToken}`,
-            },
-          }
-        )
-        .then(() => {
-          navigation.navigate("ShowDiary", {
-            selectedMonth,
-            selectedDay,
-            title: firstGptQuestion.text,
-            content: lastGptResponse.text,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    navigation.navigate("WriteDiary", {
+      selectedMonth,
+      selectedDay,
+      selectedDate,
+    });
   };
 
   const renderItem = ({ item }) => (
@@ -122,7 +94,7 @@ const AIWriteDiary = ({ navigation, route }) => {
         </TouchableOpacity>
         <Text style={styles.navTitle}>도와드릴게요.</Text>
         <TouchableOpacity style={styles.navButton} onPress={handleSaveDiary}>
-          <Text style={styles.navButtonnextText}>생성</Text>
+          <Text style={styles.navButtonnextText}>다음</Text>
         </TouchableOpacity>
       </View>
 

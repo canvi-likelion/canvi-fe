@@ -21,17 +21,10 @@ export const useApi = () => {
     }
   };
 
-  const generateAIImage = async ({
-    prompt,
-    gender,
-    age,
-    hairStyle,
-    clothes,
-  }) => {
+  const generateAIImage = async ({ prompt, gender, hairStyle, clothes }) => {
     const imageData = {
       prompt,
       ...(gender && { gender }),
-      ...(age && { age }),
       ...(hairStyle && { hairStyle }),
       ...(clothes && { clothes }),
     };
